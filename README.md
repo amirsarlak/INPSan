@@ -1,2 +1,2 @@
-# INPSan
-Partak Storage
+# INPSan-platform
+ INPSan Enterprise Storage Platform
