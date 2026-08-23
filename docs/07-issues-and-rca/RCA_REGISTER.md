@@ -2,41 +2,69 @@
 
 ## INPSAN-RCA-MON-001 — Monitoring service instability
 
-- **Symptom:** monitoring service/runtime was not yet a dependable native baseline.
-- **Root cause class:** SMF/service integration and runtime packaging defects.
-- **Corrective action:** Monitoring Foundation revisions through v3.2.0.5; native verification.
+- **Corrective action:** Monitoring Foundation revisions through v3.2.0.5 and native verification.
 - **Status:** `RESOLVED / PASS`.
 
 ## INPSAN-RCA-DASH-001 — Historical timing and axis behavior
 
-- **Symptom:** historical dashboard delay/range behavior and time-axis representation required correction.
-- **Root cause class:** history handling and time-axis implementation.
 - **Corrective action:** epoch-based handling and validation of supported ranges.
-- **Status:** `RESOLVED / PASS` in v3.2.1.6 baseline.
+- **Status:** `RESOLVED / PASS` in v3.2.1.6.
 
-## INPSAN-RCA-HW-001 — HPE H240 not represented correctly
+## INPSAN-RCA-HW-001 — HPE H240 inventory recognition
 
-- **Symptom:** controller/hardware inventory was incomplete.
-- **Root cause class:** driver/source recognition mismatch.
-- **Corrective action:** recognize the H240 through OmniOS `smrt` and integrate native hardware inventory.
+- **Corrective action:** recognize H240 through OmniOS `smrt` and integrate native hardware inventory.
 - **Status:** `RESOLVED / PASS` in v3.2.0.11-r2.
 
 ## INPSAN-RCA-DASH-002 — Low contrast and undersized UI
 
-- **Symptom:** dark text could appear on dark menu/select surfaces; fonts remained difficult to read at 150% zoom.
-- **Root cause class:** insufficiently explicit theme contrast and typography rules across controls/browsers.
-- **Corrective action:** high-contrast light surfaces, dark text, larger typography and clear focus states.
-- **Status:** `RESOLVED / PASS` in v3.2.3.1-r1.
+- **Corrective action:** high-contrast controls, readable typography and focus states.
+- **Status:** `RESOLVED / PASS`.
 
-## INPSAN-RCA-HW-002 — Physical bay identity ambiguity
+## INPSAN-RCA-HW-002 — Physical Bay identity ambiguity
 
-- **Symptom:** a disk must stay associated with the correct physical bay through removal, failure and reinsertion.
-- **Root cause class:** transient enumeration cannot guarantee stable logical-to-physical identity.
-- **Corrective action:** persistent disk identity plus enclosure/slot reconciliation.
-- **Status:** `PARTIAL PASS`; full physical acceptance testing pending.
+- **Symptom:** logical discovery order and retained device records produced incorrect Bay occupancy.
+- **Root cause:** transient enumeration was treated as physical truth.
+- **Corrective action:** H240 Port/Box/Bay/Serial event correlation, exact expected identity and stale-record suppression.
+- **Status:** `RESOLVED / PASS` in topology v3.2.0.11-r3.
 
-## INPSAN-RCA-DASH-003 — Corrective stabilization not yet accepted
+## INPSAN-RCA-INST-001 — Initial physical-truth installer timeout
 
-- **Symptom:** a consolidated package was required for remaining theme/font/widget/mapping corrections.
-- **Corrective action:** v3.2.4.3 package built, hash verified and preflight passed.
-- **Status:** `OPEN / AWAITING VALIDATION`; installation and browser acceptance evidence required.
+- **Symptom:** topology was not regenerated within the installer timeout.
+- **Root cause:** collector payload did not have executable permission in the first package revision.
+- **Corrective action:** safe rollback, permission correction and revised install/native verification.
+- **Status:** `RESOLVED / PASS`.
+
+## INPSAN-RCA-DASH-003 — Removed disk displayed healthy in disk operations
+
+- **Root cause:** operational disk health did not consume the physical-Bay missing state.
+- **Corrective action:** unify physical missing/removed state with disk operations health.
+- **Status:** `RESOLVED / PASS` in v3.2.4.4-r2.
+
+## INPSAN-RCA-ZFS-001 — Pool/VDEV identity unknown
+
+- **Root cause:** incomplete device-path and persistent-WWN correlation.
+- **Corrective action:** live ZFS leaf identity correlation.
+- **Status:** `RESOLVED / PASS` in v3.2.4.5.
+
+## INPSAN-RCA-IO-001 — I/O telemetry not sufficiently current
+
+- **Root cause:** the main 60-second monitoring cadence was unsuitable for current operations.
+- **Corrective action:** independent read-only 10-second Live I/O service.
+- **Status:** `RESOLVED / PASS` in v3.2.4.6 / Live I/O v3.2.0.13.
+
+## INPSAN-RCA-ALT-001 — Physical-Bay events missing from Event Store
+
+- **Root cause:** the long-running Alert Engine retained an older DataAdapter in memory.
+- **Corrective action:** current adapter identity/reload handling and explicit physical-Bay lifecycle processing.
+- **Status:** `RESOLVED / PASS` in Alert Engine v3.2.3.0-r1.
+
+## INPSAN-RCA-RPOOL-001 — Reinserted boot-pool member remained faulted
+
+- **Root cause:** the first clear attempt targeted a slice-qualified name that was not the pool leaf identity.
+- **Corrective action:** clear the correct whole-disk leaf and run a full scrub.
+- **Status:** `RESOLVED / PASS`; pool online, zero repaired bytes and zero scrub errors.
+
+## Open RCA queue
+
+Five active non-disk alerts remain pending classification across power, FMA, Fibre Channel and network policy. They must not be cleared, acknowledged or silenced before read-only RCA.
+
