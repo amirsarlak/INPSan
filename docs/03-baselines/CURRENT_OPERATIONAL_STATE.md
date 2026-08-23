@@ -1,53 +1,56 @@
 # INPSan Current Operational State
 
-State date: `2026-08-05 23:22 +03:30`  
-Classification: `RECONSTRUCTED FROM APPROVED PROJECT RECORD`
+State date: `2026-08-23 17:12 +03:30`  
+Classification: `LIVE VALIDATED / SANITIZED PUBLIC SUMMARY`
 
 ## Stable operational foundation
 
-- OmniOS r151054;
+- OmniOS r151054 and napp-it 22.03 host integration;
 - Web GUI Golden v3.1.13;
 - Monitoring Foundation v3.2.0.5;
-- telemetry schema 1.1 and contract 1.0;
-- Dashboard and historical telemetry foundation;
-- hardware health/inventory and H240 `smrt` detection;
-- iLO/Redfish integration;
-- chassis visualization;
-- Alert Engine and Event Store;
-- alert display and accessibility/readability corrections.
+- Dashboard v3.2.4.6-ui1 and DataAdapter 3.2.4.6;
+- H240 topology v3.2.0.11-r3 with physical mapping quality `verified_live`;
+- Live I/O v3.2.0.13 with read-only 10-second sampling;
+- Alert Engine/Event Store v3.2.3.0-r1;
+- Notification Engine v3.2.4.0-r1 and Notification Center v3.2.4.1 with outbound delivery disabled.
 
-## Storage and protocol state
+## Storage and topology state
 
-- OpenZFS pools and `rpool` were operational at the validated checkpoints.
-- A historical `rpool` checksum count was observed and must remain visible in operational review rather than silently discarded.
-- COMSTAR/STMF and iSCSI target foundations were online in tested configurations.
-- QLogic FC was tested in target and initiator workflows; the validated operational test cited an online 16 Gb initiator link.
+- all pools were healthy at the final accepted checkpoint;
+- the boot pool mirror was online and completed a scrub with zero repaired bytes and zero errors;
+- eight disks were present and healthy in front Bays 1–8;
+- Bays 9–24 were verified empty;
+- the 1.8 TB disks in Bays 6 and 7 were intentionally not assigned to any ZFS pool at this checkpoint;
+- disk-to-pool and VDEV correlation was live-verified for pool members.
 
-## Hardware state requiring controlled validation
+Raw device names, WWNs and serial numbers are intentionally omitted from this public record.
 
-The last operator-reported physical front-bay state used for the next validation plan was:
+## Physical-Bay lifecycle state
 
-- Bay 1: 300 GB disk associated with `rpool`;
-- Bay 2: 300 GB `rpool` member intentionally removed for corrective testing;
-- Bays 3 and 4: approximately 1.8 TB disks;
-- Bay 5: 300 GB disk in the 300 GB pool;
-- Bays 6 and 7: empty before planned insertion tests;
-- Bay 8: 256 GB SSD;
-- Bays 9–24: empty.
+- H240 Port/Box/Bay/Serial events are the physical-presence truth source because iLO does not reliably expose H240-attached disks;
+- current OS inventory is correlated with H240 events but cannot override a newer removal event;
+- removal produces `MISSING/REMOVED` and a Critical physical-Bay alert for expected identities;
+- reinsertion of the expected drive restores healthy state after configured stability cycles;
+- independent Bay 6 and Bay 7 incidents were opened and resolved with append-only history.
 
-This operator-reported state is the acceptance reference. A package projection or inferred mapping must not override physical verification.
+## Dashboard and operations state
+
+- dark-theme contrast and typography are accepted;
+- disk operations are compact and responsive;
+- Bay order is numeric ascending;
+- capacity is visible while full identity, topology, SMART and error detail remains available through hover/focus;
+- disk read, write, IOPS and busy values use the latest 10-second sample.
 
 ## Current pending actions
 
-1. Install and validate Dashboard Corrective Stabilization v3.2.4.3; preflight alone is not acceptance.
-2. Complete browser and visual QA, including Chrome and zoom/readability checks.
-3. Validate Bay 2 reinsertion and error-state recovery.
-4. Insert new disks in Bays 6 and 7 and verify deterministic discovery.
-5. Execute repeated removal/reinsert tests for occupied bays.
-6. Validate missing/failed/recovered state transitions without stale alerts.
-7. Keep notification channels disabled.
-8. Resolve NTP synchronization and record evidence.
+1. Perform read-only RCA of five active non-disk alerts.
+2. Classify each as `REAL FAULT`, `EXPECTED STATE`, `POLICY ISSUE` or `FALSE POSITIVE`.
+3. Correct alert rules only where evidence proves a false positive.
+4. Keep outbound notification channels disabled until alert quality is accepted.
+5. Conduct controlled channel-by-channel delivery tests after alert RCA.
+6. Continue Stage 1 API, authentication, RBAC, audit, reporting, hardening and licensing work after operational closure.
 
-## Evidence limitations
+## Protected state
 
-Historical package names and PASS states are documented, but not all raw logs/screenshots from earlier conversations are present in GitHub. Those items are marked as reconstructed records and should be enriched with retained evidence where available.
+Do not clear, acknowledge or silence current active alerts before RCA. Do not run FMA repair/acquit actions, modify the chassis map manually, replay historical alerts or delete Event/Audit history.
+

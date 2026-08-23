@@ -1,8 +1,9 @@
 # INPSan Engineering Documentation
 
-Version: **Framework v1.1**  
+Version: **Framework v1.2**  
 Bootstrap date: **2026-08-05**  
 Strategic rebaseline: **2026-08-06**  
+Latest operational checkpoint: **2026-08-23**  
 Repository role: **Engineering source of truth for approved project documentation**
 
 ## Purpose
@@ -46,11 +47,14 @@ A component is not an operational baseline merely because installation or coding
 | Baselines | [Baseline Register](03-baselines/BASELINE_REGISTER.md) |
 | Current state | [Current Operational State](03-baselines/CURRENT_OPERATIONAL_STATE.md) |
 | Strategic checkpoint | [INPSAN-CP-STR-001](04-checkpoints/INPSAN-CP-STR-001-2026-08-06.md) |
+| Current operational checkpoint | [INPSAN-CP-OPS-001](04-checkpoints/INPSAN-CP-OPS-001-2026-08-23.md) |
 | Historical implementation | [Historical Work Packages](05-work-packages/HISTORICAL_WORK_PACKAGES.md) |
 | Architecture decisions | [ADR Register](06-decisions/ADR_REGISTER.md) |
 | Problems and root causes | [RCA Register](07-issues-and-rca/RCA_REGISTER.md) |
 | Test governance | [Test and Evidence Policy](08-testing/TEST_AND_EVIDENCE_POLICY.md) |
+| Current live test | [H240 and Alert Lifecycle Test](08-testing/TEST-OPS-001-H240-ALERT-LIFECYCLE-2026-08-23.md) |
 | Releases | [Release History](09-releases/RELEASE_HISTORY.md) |
+| Current release notes | [Operational Acceptance Release Notes](09-releases/RELEASE-NOTES-2026-08-23-OPERATIONS.md) |
 | Next action | [Continuation Point](10-operations/CONTINUATION_POINT.md) |
 | Security hardening | [Security Hardening Baseline](11-security/SECURITY_HARDENING_BASELINE.md) |
 | Licensing | [Licensing Strategy](12-licensing/LICENSING_STRATEGY.md) |
@@ -58,4 +62,5 @@ A component is not an operational baseline merely because installation or coding
 
 ## Evidence boundary
 
-This repository is public. It may contain sanitized command excerpts and non-sensitive screenshots, but must not contain secrets, internal IP addressing, credentials, tokens, complete production logs or raw serial-number inventories. Sensitive evidence must be retained in an approved private evidence store and referenced by an evidence ID.
+This repository is public. It may contain sanitized command excerpts and non-sensitive screenshots, but must not contain secrets, internal IP addressing, credentials, tokens, complete production logs, raw serial-number inventories or private hardware identifiers. Sensitive evidence is retained in the approved private evidence store and referenced by checkpoint or evidence ID.
+
