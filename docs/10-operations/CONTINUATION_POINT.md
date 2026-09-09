@@ -1,46 +1,45 @@
 # INPSan Continuation Point
 
-Checkpoint time: `2026-08-05 23:22 +03:30`
+Checkpoint time: `2026-09-09`  
+Reference checkpoint: `CP-20260909-P2-ARC-01`
 
 ## Immediate objective
 
-Close the remaining Phase 1 operational-validation gaps before beginning the full API/RBAC/reporting implementation phase.
+Validate memory/ARC stability under normal operation after applying the 16 GiB ARC ceiling, while preserving both kernel-panic cases for continued RCA.
+
+## Current accepted stabilization
+
+- Persistent ARC ceiling: `zfs_arc_max = 17179869184` (16 GiB).
+- Runtime post-reboot verification: `c_max = 17179869184`.
+- All pools healthy and ONLINE after controlled reboot.
+- No production `savecore` re-test is permitted at this stage.
 
 ## Next execution sequence
 
-1. Confirm the correct host and capture pre-change state.
-2. Install Dashboard Corrective Stabilization v3.2.4.3.
-3. Verify services, runtime data and dashboard load.
-4. Run visual QA on Chrome and the agreed browser matrix.
-5. Validate typography, menus, selects, focus states and widget layout.
-6. Compare dashboard bay state against the operator-reported physical state, not against inferred package output.
-7. Reinsert the Bay 2 `rpool` disk and verify recovery.
-8. Insert disks into Bays 6 and 7 and verify correct discovery.
-9. Repeat occupied-bay removal/reinsert tests.
-10. Validate missing, failed, recovered and replaced state transitions.
-11. Confirm alert lifecycle and stale-alert clearing.
-12. Keep all outbound notification channels disabled.
-13. Resolve NTP synchronization.
-14. Create test report, release decision and new official checkpoint.
+1. Observe ARC size and total memory under normal production-like workload.
+2. Confirm memory does not return to the former sustained `96–97%` range.
+3. Verify no new pageout/panic/FMA case appears during ordinary operation.
+4. Preserve `/var/crash/vmdump.0`, `/var/crash/vmdump.1`, and `/var/crash/INPSan-smrt-RCA-20260805`.
+5. Keep FMA UUID `5dc99e1e-95ee-4871-9791-ec40e8744d10` open for the Aug 05 `smrt` panic RCA.
+6. Keep FMA UUID `5c61c9de-cca3-4b1e-abbf-6b0334af7119` open until stabilization observation and offline RCA are complete.
+7. Perform any further crash-dump analysis on a build-matched offline/clone environment where practical.
+8. Complete P1 alert-action cleanup: canonical asset query, audit `remote`, current engine-version metadata and frontend state-sync latency.
+9. Resume hardware-health reconciliation and physical-bay lifecycle stability validation after the memory gate passes.
+10. Keep all outbound notification channels disabled.
 
-## Acceptance gate
+## Acceptance gate for ARC stabilization
 
-v3.2.4.3 may become a baseline only after:
+The 16 GiB stabilization baseline may remain accepted if normal operation shows:
 
-- installation success;
-- no regression in telemetry or alerts;
-- visual acceptance;
-- correct physical bay reconciliation;
-- completed evidence package;
-- explicit approval.
+- `c_max` remains exactly `17179869184`;
+- no sustained return to critical memory occupancy;
+- no new pageout-deadman panic;
+- no storage regression;
+- ZFS pools remain healthy;
+- no evidence that the ARC ceiling materially breaks the validated SAN/NAS workload.
 
-## Following phase
+The value is a safe operational ceiling, not yet a final performance-tuned value. Any increase (for example 18 or 20 GiB) requires separate evidence and controlled testing.
 
-After closure, begin Phase 2 architecture and implementation:
+## Separate unresolved RCA
 
-- REST API;
-- authentication and RBAC;
-- audit trail;
-- reporting;
-- scheduler;
-- plugin boundary.
+The Aug 05 H240/`smrt` kernel panic remains an independent high-risk driver-path RCA and must not be considered resolved by the ARC mitigation.
