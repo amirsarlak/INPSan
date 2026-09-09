@@ -68,6 +68,21 @@ Validated runtime values:
 
 Result: `P2.3F-B ARC Boot Activation = PASS`.
 
+## P2.3G short-term warm-up stability
+
+Six one-minute normal-operation samples were captured from `10:55:58` through `11:01:04 +03:30`.
+
+- ARC increased normally from `10090205880` bytes (~9.40 GiB) to `16016094264` bytes (~14.92 GiB).
+- `c` and `c_max` remained exactly `17179869184` bytes in every sample.
+- `vmstat` free memory at the final sample was `12443952 KB` (~11.9 GiB), versus approximately 1.05 GiB free at the panic.
+- Page-out remained zero in the sampled intervals.
+- All ZFS pools remained healthy throughout.
+- No new FMA kernel-panic case appeared; only the two known cases remain.
+
+Result: `P2.3G Short-Term Stability = PASS`.
+
+Evidence index: `docs/08-testing/evidence-index/INPSAN-TE-P2-ARC-STABILITY-2026-09-09.md`.
+
 ## Safety decision
 
 Until the RCA is further isolated:
@@ -79,12 +94,12 @@ Until the RCA is further isolated:
 
 ## Pending
 
-1. Observe ARC and total memory under normal workload with the 16 GiB ceiling.
-2. Confirm historical telemetry remains stable and memory does not return to the previous 96–97% steady state.
-3. Continue Incident A `smrt` driver RCA separately.
-4. Isolate the exact lower-level cause of the Incident B `VOP_PUTPAGE` stall if additional evidence becomes available.
-5. Resume hardware-health and physical-bay stability work only after memory stabilization is accepted.
+1. Retain normal telemetry observation to confirm the 16 GiB ceiling remains stable over ordinary operation; no dedicated stress reproduction is required on production.
+2. Continue Incident A `smrt` driver RCA separately using read-only evidence first.
+3. Isolate the exact lower-level cause of the Incident B `VOP_PUTPAGE` stall only if non-disruptive or offline evidence becomes available.
+4. Complete P1 alert-action packaging cleanup.
+5. Resume hardware-health and physical-bay stability work after the remaining driver-risk review.
 
 ## Baseline decision
 
-The `16 GiB` ARC ceiling is accepted as an operational stabilization baseline. It is not yet a performance-optimized final value; later tuning may be performed only with evidence and controlled testing.
+The `16 GiB` ARC ceiling is accepted as an operational stabilization baseline and has passed boot activation plus short-term warm-up observation. It is not yet a performance-optimized final value; later tuning may be performed only with evidence and controlled testing.
