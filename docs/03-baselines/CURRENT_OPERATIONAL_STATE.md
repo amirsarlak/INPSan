@@ -59,10 +59,18 @@ Post-reboot verification:
 
 - `zfs:0:arcstats:c_max = 17179869184`;
 - `zfs:0:arcstats:c = 17179869184`;
-- initial ARC size approximately `560 MB`;
 - pools healthy after controlled reboot.
 
-Status: `PASS` as an operational stabilization baseline. The 16 GiB value is not yet declared the final performance-optimal value.
+Short-term normal-operation warm-up validation:
+
+- ARC grew from approximately `9.40 GiB` to `14.92 GiB` over six one-minute samples;
+- ARC remained below the fixed 16 GiB ceiling;
+- final `vmstat` free memory approximately `11.9 GiB`;
+- no sampled page-out activity;
+- all pools remained healthy;
+- no new FMA panic case appeared.
+
+Status: `PASS` as an operational stabilization baseline, including short-term warm-up validation. The 16 GiB value is not yet declared the final performance-optimal value.
 
 ## Safety restrictions currently in force
 
@@ -74,10 +82,9 @@ Status: `PASS` as an operational stabilization baseline. The 16 GiB value is not
 
 ## Current pending actions
 
-1. Observe ARC and total memory under normal production-like workload with the 16 GiB ceiling.
-2. Confirm memory remains within a safe operating range and does not return to the previous 96–97% steady state.
-3. Continue the independent Aug 05 `smrt` driver RCA.
-4. Continue low-level RCA of the Sep 09 pageout stall only with non-disruptive evidence or offline dump analysis.
-5. Complete P1 alert-action packaging cleanup: canonical asset query, audit `remote`, engine-version metadata and UI sync latency.
-6. Resume hardware-health reconciliation and physical-bay lifecycle stability after memory stabilization is accepted.
-7. Keep outbound notification channels disabled.
+1. Continue ordinary telemetry observation of the 16 GiB ARC baseline without production stress reproduction.
+2. Continue the independent Aug 05 `smrt` driver RCA using read-only evidence first.
+3. Continue low-level RCA of the Sep 09 pageout stall only with non-disruptive evidence or offline dump analysis.
+4. Complete P1 alert-action packaging cleanup: canonical asset query, audit `remote`, engine-version metadata and UI sync latency.
+5. Resume hardware-health reconciliation and physical-bay lifecycle stability after the remaining driver-risk review.
+6. Keep outbound notification channels disabled.
