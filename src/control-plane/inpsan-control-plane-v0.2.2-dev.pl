@@ -186,6 +186,14 @@ sub dispatch {
         return ($http_status, ok_obj($data, $freshness, 'zpool-list'));
     }
 
+    if ($req->{path} =~ m{\A/api/v1/storage/pools/([A-Za-z0-9._-]{1,128})\z}) {
+        my $pool = $1;
+        my $az = authorize_endpoint($session, $req->{method}, $req->{path});
+        return @$az unless $az->[0] == 0;
+        my ($data, $freshness, $http_status) = storage_pool_detail($pool);
+        return ($http_status, ok_obj($data, $freshness, 'zpool-list-detail'));
+    }
+
     return (501, error_obj('not_implemented', 'Endpoint is defined by the contract but not implemented in this dev build.'))
         if $req->{path} =~ m{^/api/v1/(?:storage/disks|hardware/topology|performance/live|alerts|events)$};
 
