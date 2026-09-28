@@ -84,7 +84,7 @@ grep -q "Secure; HttpOnly; SameSite=Strict" "$CP" || exit 1
 grep -q "Strict-Transport-Security" "$CP" || exit 1
 grep -q "Content-Security-Policy" "$CP" || exit 1
 grep -q "Permissions-Policy" "$CP" || exit 1
-grep -q "TLSv12:TLSv13" "$CP" || exit 1
+grep -q "SSLv23:!TLSv1:!TLSv1_1:!SSLv3:!SSLv2" "$CP" || exit 1
 grep -q "IO::Socket::SSL" "$CP" || exit 1
 grep -q "Certificate->new" "$CP" || exit 1
 
