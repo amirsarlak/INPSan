@@ -15,4 +15,8 @@
 | ADR-0011 | Two-stage productization model | ACCEPTED | Stage 1 delivers secure single-node GA; Stage 2 delivers scale, automation and ecosystem |
 | ADR-0012 | License safety and napp-it independence | ACCEPTED FOR STAGE 1 | Resolve redistribution risk and make license expiry non-destructive |
 
+| ADR-0013 | Knowledge-based evidence-driven engineering | ACCEPTED | Prioritize demonstrable proprietary depth, security, metrics and evidence |
+| ADR-0014 | Local-first predictive intelligence | ACCEPTED AS R&D ARCHITECTURE | Build local telemetry-based anomaly/forecast pipeline with explainability |
+| ADR-0015 | Central Manager outside storage data path | ACCEPTED AS STAGE 2 ARCHITECTURE | Fleet management must not become a data-service dependency |
+
 Detailed high-impact decisions are documented in adjacent ADR files.
