@@ -155,6 +155,199 @@ For every proprietary module, maintain:
 Only implemented and demonstrable capabilities may be presented as current product technology; roadmap items must remain clearly identified as future R&D.
 
 
+
+## Mandatory Cross-Cutting Product Doctrine — 2026-09-28
+
+The following constraints are mandatory for all 3.3+ workstreams and are evaluated together at every checkpoint.
+
+### 1. Human-owned enterprise UX and provenance
+
+INPSan UI/UX must be demonstrably company-owned, product-specific and grounded in human engineering decisions.
+
+Required:
+- maintain an INPSan-owned design system, component inventory, design tokens, interaction rules and accessibility criteria;
+- retain design rationale, operator workflow mapping, usability-test notes and revision history;
+- avoid generic template/dashboard patterns, decorative layouts or repetitive AI-like visual structures that obscure operational context;
+- every major screen must identify its operational purpose, primary persona, decisions supported and underlying data sources;
+- AI-assisted development tools may be used internally, but product ownership is demonstrated by company-authored requirements, ADRs, architecture, source, tests, UX rationale and evidence.
+
+### 2. Experience-derived storage operations intelligence
+
+Monitoring, alerts, logs and reports must be explicitly derived from the R&D team's long-term enterprise-storage/network/security field experience and from documented needs of IT administrators, storage engineers, NOC/SOC teams, auditors and managers.
+
+Each important widget/alert/report must have:
+- operational problem statement;
+- affected persona;
+- source telemetry;
+- threshold/detection rationale;
+- severity and action guidance;
+- false-positive/false-negative considerations;
+- test/evidence reference.
+
+The product must preserve a requirements register showing how real operational pain points become implemented features.
+
+### 3. AFTA and passive-defense-by-design alignment
+
+INPSan shall maintain a dedicated national security/passive-defense requirements stream in addition to international standards.
+
+Publicly available AFTA-oriented network-application security requirements are treated as an engineering baseline for applicable Web/API functions, including:
+- security audit/log generation, protection, filtering, integrity and capacity warning;
+- identification/authentication, failure handling, password/authenticator management and session behavior;
+- user-data/access-control policy;
+- security management and role restrictions;
+- protection of security functions and trusted time;
+- access/session controls;
+- trusted paths/channels;
+- HTTPS/TLS/certificate-validation and SSH requirements where applicable;
+- secure update/integrity requirements.
+
+Final conformance remains subject to the assigned AFTA laboratory, evaluated product category, current issued documents and frozen Security Target.
+
+Passive-defense alignment shall explicitly support:
+- monitoring, detection, warning and situational awareness;
+- predictive/early-warning operation;
+- cyber resilience and continuity of essential functions;
+- vulnerability/risk reduction;
+- insider-threat-relevant accountability;
+- self-protection and controlled degradation;
+- incident-response readiness;
+- recovery and reversibility;
+- dependency/redundancy visibility;
+- exercises/readiness evidence where applicable.
+
+### 4. Per-user / per-organization operations workspace
+
+Every authorized user may have role-scoped personalization while organization security policy remains authoritative.
+
+Target capabilities:
+- user-specific dashboards and saved views;
+- organization/site-specific presets;
+- widget library and layout customization;
+- saved time ranges, filters and drilldowns;
+- configurable alert thresholds within administrator-defined bounds;
+- NOC/SOC/Storage/Management/Audit presets;
+- report templates and scheduled reports;
+- policy inheritance and locked controls;
+- auditable change history for dashboard/report/alert definitions.
+
+### 5. Local Predictive Intelligence
+
+INPSan shall provide a local-first predictive subsystem that does not require disclosure of customer telemetry to a cloud service.
+
+The subsystem must ingest operational metadata/telemetry such as:
+- read/write throughput;
+- IOPS;
+- latency and queue depth;
+- capacity growth;
+- SMART/media errors;
+- HBA/FC/iSCSI counters;
+- network errors;
+- ARC/memory pressure;
+- temperature/hardware telemetry;
+- event/alert history;
+- workload periodicity and seasonality.
+
+Development order:
+1. deterministic baselines and data-quality gates;
+2. anomaly detection;
+3. trend/capacity/saturation forecasting;
+4. failure-risk prediction;
+5. explainable pre-event warnings;
+6. recommendation assistance.
+
+Requirements:
+- local time-series/feature store;
+- model registry and version provenance;
+- explainable contributing signals;
+- confidence score;
+- drift monitoring;
+- false-positive/false-negative measurement;
+- explicit labels separating observed fault, anomaly, forecast and recommendation;
+- customer payload-content analysis excluded by default.
+
+### 6. Central Management
+
+A future Central Manager shall securely operate multiple INPSan appliances.
+
+Mandatory principles:
+- unique node identity and secure enrollment;
+- mutually authenticated protected channel;
+- organization/site/node scope;
+- aggregated inventory, health, alerts, capacity and security posture;
+- central policy/configuration orchestration with local safety guards;
+- full audit trail;
+- staged signed update orchestration and rollback;
+- Central Manager outage must not interrupt local storage service or safe local administration.
+
+### 7. Maintainable, explainable source engineering
+
+All proprietary source must minimize key-person dependency.
+
+Mandatory source artifacts:
+- file/module header: purpose, owner, inputs/outputs, dependencies, security impact and related ADR;
+- public function/module contracts and meaningful docstrings/comments;
+- comments must explain rationale, operational/security intent, assumptions and non-obvious workarounds rather than restating syntax;
+- architecture/dependency map;
+- versioned API/CLI contracts;
+- unit/integration/regression/security tests;
+- onboarding and maintenance runbooks.
+
+### 8. Security modules and attack-surface reduction
+
+Security is a product capability, not a final hardening task.
+
+Required product modules/workstreams include:
+- independent AuthN;
+- capability-based RBAC and object/scope authorization;
+- MFA for privileged operations;
+- security audit plane;
+- secrets/certificate lifecycle;
+- TLS-only management;
+- secure operation broker;
+- storage-protocol security policy;
+- signed update and integrity verification;
+- vulnerability/SAST/SCA/DAST/secret scanning;
+- SBOM;
+- independent penetration testing;
+- release security gate;
+- security configuration backup/recovery;
+- detection of suspicious/destructive administrative behavior.
+
+### 9. Resource-efficiency and benchmark engineering
+
+Every production service/module must have a measured performance budget.
+
+Measure at minimum:
+- CPU utilization and peak;
+- RAM and ARC interaction;
+- persistent storage footprint and growth;
+- telemetry/write amplification overhead;
+- API latency and percentile response;
+- dashboard render/data-adapter latency;
+- event-to-alert latency;
+- startup/recovery time;
+- session/authentication/KDF cost;
+- predictive-engine training/inference cost;
+- Central Manager scale cost.
+
+Benchmark profiles:
+- idle;
+- normal;
+- high-I/O;
+- degraded/failure;
+- security-event burst;
+- long-duration soak.
+
+Optimization decisions must be supported by measured evidence, not only code-size or subjective implementation preference.
+
+### 10. Unified evidence rule
+
+Every major feature must trace:
+
+`Experience/Requirement -> Standard/AFTA/Passive-Defense Need -> Architecture/ADR -> Source -> Test -> Benchmark/Security Evidence -> Release/Checkpoint`
+
+No roadmap capability may be represented as implemented merely because it is designed or prototyped.
+
 ---
 
 # Stage 1 — Secure Single-Node Productization and General Availability
