@@ -12,6 +12,7 @@ use INPSan::Security::Auth;
 use INPSan::Security::RBAC;
 use INPSan::Security::EndpointPolicy;
 use INPSan::Security::Audit;
+use INPSan::Security::Scope;
 
 # INPSan Control Plane v0.2.2-dev
 # Security milestone: SEC-IMP-01 independent identity/authentication foundation.
@@ -53,6 +54,7 @@ my $auth = INPSan::Security::Auth->new(
 );
 my $rbac = INPSan::Security::RBAC->new();
 my $endpoint_policy = INPSan::Security::EndpointPolicy->new();
+my $scope_engine = INPSan::Security::Scope->new();
 my $audit = INPSan::Security::Audit->new(
     path => $audit_log,
     product_version => '0.2.2-dev',
