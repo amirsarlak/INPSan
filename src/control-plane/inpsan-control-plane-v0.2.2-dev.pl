@@ -209,10 +209,33 @@ sub authorize_endpoint {
         return [403, error_obj('forbidden', 'Endpoint policy missing.')];
     }
 
+    my $scope_allowed;
+    if ($policy->{scope_required}) {
+        my $scope_decision = $scope_engine->allows(
+            grants => $session->{scopes},
+            required_scope => $policy->{required_scope},
+        );
+        if (!$scope_decision->{allowed}) {
+            $audit->write_event(
+                actor_id=>$session->{username},
+                actor_type=>'user',
+                action=>'authorization',
+                target_type=>$policy->{resource_type} || 'resource',
+                target_id=>$policy->{resource_id} || $path,
+                permission=>$policy->{permission},
+                outcome=>'deny',
+                reason=>$scope_decision->{reason}
+            );
+            return [403, error_obj('forbidden', 'Resource scope denied.')];
+        }
+        $scope_allowed = 1;
+    }
+
     my $decision = $rbac->authorize(
         roles => $session->{roles},
         required_capability => $policy->{permission},
         scope_required => $policy->{scope_required} ? 1 : 0,
+        ($policy->{scope_required} ? (scope_allowed => $scope_allowed) : ()),
     );
 
     if (!$decision->{allowed}) {
