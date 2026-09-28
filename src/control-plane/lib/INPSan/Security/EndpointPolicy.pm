@@ -51,6 +51,10 @@ my %POLICY = (
         permission => 'audit.read',
         scope_required => 0,
     },
+    'GET /api/v1/security/tls' => {
+        permission => 'security.read',
+        scope_required => 0,
+    },
 );
 
 sub new { return bless {}, $_[0]; }
