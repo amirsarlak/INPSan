@@ -39,6 +39,18 @@ my %POLICY = (
         permission => 'system.read',
         scope_required => 0,
     },
+    'GET /api/v1/audit/health' => {
+        permission => 'audit.read',
+        scope_required => 0,
+    },
+    'GET /api/v1/audit/verify' => {
+        permission => 'audit.read',
+        scope_required => 0,
+    },
+    'POST /api/v1/audit/query' => {
+        permission => 'audit.read',
+        scope_required => 0,
+    },
 );
 
 sub new { return bless {}, $_[0]; }
