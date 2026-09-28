@@ -82,3 +82,16 @@ H240/smrt high-risk RCA restrictions remain in force for destructive hardware te
 Outbound notification channels remain disabled until independently accepted.
 
 PASS = implementation + deterministic test + retained version-bound evidence.
+
+
+## Live validation references
+
+- `src/control-plane/live-validate-security-v0.2.2.sh`
+- `docs/08-testing/LIVE-SECURITY-VALIDATION-V0.2.2.md`
+
+Execution command from `src/control-plane`:
+
+`bash live-validate-security-v0.2.2.sh`
+
+Expected evidence directory:
+`/var/tmp/inpsan-sec-live-YYYYMMDD-HHMMSS/`
