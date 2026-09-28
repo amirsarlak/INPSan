@@ -61,4 +61,7 @@ PASS only when current proprietary modules are inventoried, 3.3 modules have con
 - IODS v1 foundation: CREATED on development branch.
 - Benchmark Collector v0.1.0-dev: CREATED on development branch; live validation pending.
 - GitHub implementation backlog: issues #4–#9 OPEN.
-- Next gate: validate benchmark collector and complete source/module census.
+- Benchmark Collector live validation: PASS.
+- 3.2.x resource baseline: RECORDED.
+- Source/Module Census: PASS — 43 normalized current code files / 7,419 LOC; evidence indexed.
+- Next gate: complete IODS implementation contract and Security Architecture implementation gate.
