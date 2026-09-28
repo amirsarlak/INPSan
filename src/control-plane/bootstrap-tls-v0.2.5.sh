@@ -41,7 +41,7 @@ DNS.1 = localhost
 IP.1 = 127.0.0.1
 EOF
 
-"$OPENSSL" req   -x509   -newkey rsa:3072   -sha256   -nodes   -days 30   -keyout "$KEY"   -out "$CERT"   -config "$CONF" >/dev/null 2>&1 || exit 1
+"$OPENSSL" req   -x509   -newkey rsa:3072   -sha256   -nodes   -days 60   -keyout "$KEY"   -out "$CERT"   -config "$CONF" >/dev/null 2>&1 || exit 1
 
 chmod 600 "$KEY"
 chmod 644 "$CERT"
