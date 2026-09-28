@@ -1,82 +1,86 @@
 # INPSan Continuation Point
 
 Checkpoint time: `2026-09-28`  
-Primary reference checkpoint: `CP-SEC-001`  
-Parent strategic checkpoint: `CP-KB-001`
+Primary reference: `CP-3.3-FINAL-001`  
+Parents: `CP-KB-001 / CP-SEC-001 / CP-PD-001`
 
-## Immediate product-development objective
+## Current execution state
 
-Continue **WP-3.3-003 — Security Architecture & Certification-Readiness Baseline** from the newly created TOE/PP/SPD/ST evaluation foundation.
+Final integrated 3.3 roadmap is approved and operations have started.
 
-The next active engineering task is:
+### Completed design/evaluation baseline
+- product boundary and knowledge-based doctrine;
+- TOE Boundary v0.1;
+- PP Applicability Analysis v0.1;
+- Security Problem Definition v0.1;
+- Security Target Skeleton v0.1;
+- candidate SFR Traceability Baseline;
+- AFTA/passive-defense alignment baseline;
+- human-owned UX/experience-driven operations requirements;
+- final execution gates.
 
-**Build the SFR-to-INPSan implementation/test/evidence traceability baseline, then implement the independent Control Plane identity/AuthN/RBAC/audit security foundation before any production state-changing endpoint is accepted.**
+### Security implementation status
+- S0 Evaluation Foundation: PASS (design baseline)
+- S1 Independent Identity/AuthN: PARTIAL — code exists; live OmniOS evidence still required
+- S2 RBAC/Object-Scope Authorization: STARTED
+- S3 Security Audit Plane: OPEN
+- S4 Session/TLS/Secrets: OPEN
+- S5 Secure Operation Broker: OPEN
+- S6 Storage Protocol Security: OPEN
+- S7 Secure Update/Supply Chain: OPEN
+- S8 Security Verification/Pentest: OPEN
 
-## Active 3.3 security artifacts
+## Active code baseline
 
-- `docs/05-work-packages/WP-3.3-003-SECURITY-CERTIFICATION-BASELINE.md`
-- `docs/11-security/TOE_BOUNDARY_V0.1.md`
-- `docs/11-security/PP_APPLICABILITY_ANALYSIS_V0.1.md`
-- `docs/11-security/SECURITY_PROBLEM_DEFINITION_V0.1.md`
-- `docs/11-security/SECURITY_TARGET_SKELETON_V0.1.md`
-- `docs/11-security/SECURITY_ARCHITECTURE_V1.md`
-- `docs/11-security/CONTROL_PLANE_SECURITY_CONTRACT_V1.md`
-- `docs/11-security/SECURITY_HARDENING_BASELINE.md`
-
-## Immediate 3.3 execution sequence
-
-1. Derive candidate CC SFRs from the Security Target skeleton.
-2. Map SFR -> INPSan component -> 3.3 security control -> test -> evidence.
-3. Freeze security-critical Control Plane interfaces.
-4. Implement named local identity/authentication foundation.
-5. Implement capability-based RBAC and object/scope authorization.
-6. Implement security audit schema and protected evidence path.
-7. Implement secure command/storage adapter; prohibit unsafe shell concatenation.
-8. Add TLS/session/input-validation baseline.
-9. Execute negative authorization and Web/API security tests.
-10. Only then permit state-changing Control Plane endpoints.
-11. Proceed to FC/iSCSI/NFS/SMB policy enforcement.
-12. Implement signed update/SBOM/SAST/SCA/DAST release-security gates.
-13. Prepare independent penetration test and evaluation evidence package.
-
-## Evaluation status
-
-Working TOE:
-`INPSan Secure Storage Management Appliance — Single-Node 3.3 Evaluation Candidate`
-
-Current PP position:
-- no unsupported Protection Profile conformance claim;
-- CC:2022/CEM:2022 Security Target approach is the working evaluation structure;
-- final AFTA PP/product category/assurance package remains subject to assigned-laboratory confirmation.
-
-## Security acceptance rule
-
-No control is PASS without:
-1. implementation;
-2. deterministic verification;
-3. retained version-bound evidence.
-
-No production state-changing Control Plane endpoint is accepted before AuthN, RBAC, audit, TLS, input validation, secrets handling and negative authorization tests meet the Control Plane Security Contract.
-
-## Frozen operational baseline and unresolved production RCA
-
-The validated 3.2.x operational line remains frozen and must not be destabilized by 3.3 work.
-
-The previously accepted ARC stabilization remains in force:
-- persistent `zfs_arc_max = 17179869184` (16 GiB);
-- runtime verification previously PASS;
-- all pools healthy in the accepted sample;
-- no intentional production `savecore` re-test.
-
-The Aug 05 H240/`smrt` kernel panic remains a separate high-risk driver-path RCA:
-- do not intentionally reproduce disk removal/reset conditions on production while the RCA is open;
-- preserve the existing crash evidence;
-- aggressive physical-bay removal/reinsert testing remains gated by the driver-risk review.
-
-Outbound notification channels remain disabled until separately accepted.
-
-## Development branch
-
+Branch:
 `feature/inpsan-3.3-engineering-foundation`
 
-All 3.3 security/evaluation work continues on this branch or controlled child branches; accepted 3.2.x production baselines are not modified directly.
+Current development components:
+- `src/control-plane/lib/INPSan/Security/Auth.pm`
+- `src/control-plane/lib/INPSan/Security/RBAC.pm`
+- `src/control-plane/inpsan-control-plane-v0.2.1-dev.pl`
+- `src/control-plane/inpsan-useradd-v0.2.0-dev.pl`
+- `src/control-plane/verify-auth-v0.2.sh`
+- `src/control-plane/verify-rbac-v0.2.1.sh`
+
+## Immediate next operations
+
+1. Execute SEC-IMP-01 live OmniOS validation and retain sanitized evidence.
+2. Add explicit endpoint-permission registry rather than scattered authorization literals.
+3. Add negative authorization tests for viewer/operator/storage-admin/security-admin/auditor/platform-admin.
+4. Add object/scope authorization contract for storage resources.
+5. Start SEC-IMP-03 Security Audit Plane:
+   - canonical audit schema;
+   - login/logout/authz/config/privileged-action coverage;
+   - integrity/retention/export design.
+6. Do not add production state-changing storage endpoints before S1-S5 gates pass.
+
+## Parallel mandatory workstreams
+
+In parallel:
+- UX Design System / personas / customizable workspace;
+- benchmark/resource-efficiency framework;
+- local predictive intelligence data-quality foundation;
+- Central Manager architecture;
+- licensing/product governance;
+- operational/RCA closure;
+- knowledge-based evidence package.
+
+Each new work item must state:
+- product/operational purpose;
+- knowledge-based/R&D evidence;
+- AFTA/security applicability;
+- passive-defense/resilience impact;
+- UX/operator impact;
+- performance/resource impact;
+- test/evidence output.
+
+## Production safety
+
+The validated 3.2.x operational line remains frozen.
+
+H240/smrt high-risk RCA restrictions remain in force for destructive hardware tests.
+
+Outbound notification channels remain disabled until independently accepted.
+
+PASS = implementation + deterministic test + retained version-bound evidence.
