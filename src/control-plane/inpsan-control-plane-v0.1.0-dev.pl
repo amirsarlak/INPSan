@@ -81,11 +81,15 @@ sub route {
     return (200, ok_obj(product_version(), 'fresh', 'control-plane-dev'))
         if $path eq '/api/v1/product/version';
 
-    return (200, ok_obj(system_health(), 'fresh', 'local-read-model'))
-        if $path eq '/api/v1/system/health';
+    if ($path eq '/api/v1/system/health') {
+        my ($data, $freshness, $http_status) = system_health();
+        return ($http_status, ok_obj($data, $freshness, 'local-read-model'));
+    }
 
-    return (200, ok_obj(storage_pools(), 'fresh', 'zpool-list'))
-        if $path eq '/api/v1/storage/pools';
+    if ($path eq '/api/v1/storage/pools') {
+        my ($data, $freshness, $http_status) = storage_pools();
+        return ($http_status, ok_obj($data, $freshness, 'zpool-list'));
+    }
 
     return (501, error_obj('not_implemented', 'Endpoint is defined by the contract but not implemented in this dev build.'))
         if $path =~ m{^/api/v1/(?:storage/disks|hardware/topology|performance/live|alerts|events)$};
@@ -194,14 +198,20 @@ sub product_version {
 
 sub system_health {
     my ($zout, $zrc) = run_capture('/usr/sbin/zpool', 'status', '-x');
-    my $pools_healthy = defined($zout) && $zrc == 0 && $zout =~ /all pools are healthy/i ? JSON::PP::true : JSON::PP::false;
+    my $zpool_available = defined($zout) && $zrc == 0;
+    my $pools_healthy = $zpool_available && $zout =~ /all pools are healthy/i ? JSON::PP::true : JSON::PP::false;
 
     my $alert_path = '/opt/inpsan/alert-engine/bin/inpsan-alertctl';
     my $alert;
+    my $alert_available = 0;
     if (-x $alert_path) {
         my ($aout, $arc) = run_capture($alert_path, 'status');
         if (defined $aout && $arc == 0) {
-            eval { $alert = decode_json($aout); 1 } or $alert = { parse_error => JSON::PP::true };
+            if (eval { $alert = decode_json($aout); 1 }) {
+                $alert_available = 1;
+            } else {
+                $alert = { parse_error => JSON::PP::true };
+            }
         } else {
             $alert = { source_unavailable => JSON::PP::true };
         }
@@ -209,16 +219,26 @@ sub system_health {
         $alert = { source_unavailable => JSON::PP::true };
     }
 
-    return {
+    my $freshness = ($zpool_available && $alert_available) ? 'fresh'
+                  : ($zpool_available || $alert_available) ? 'stale'
+                  : 'source_unavailable';
+    my $http_status = ($zpool_available || $alert_available) ? 200 : 503;
+
+    return ({
         pools_healthy => $pools_healthy,
-        zpool_status_summary => defined($zout) ? trim_one_line($zout) : undef,
+        zpool_status_summary => $zpool_available ? trim_one_line($zout) : undef,
+        zpool_source_available => $zpool_available ? JSON::PP::true : JSON::PP::false,
+        alert_source_available => $alert_available ? JSON::PP::true : JSON::PP::false,
         alert_engine => $alert,
-    };
+    }, $freshness, $http_status);
 }
 
 sub storage_pools {
     my ($out, $rc) = run_capture('/usr/sbin/zpool', 'list', '-Hp');
-    return { source_unavailable => JSON::PP::true, pools => [] } unless defined($out) && $rc == 0;
+    return ({
+        source_unavailable => JSON::PP::true,
+        pools => []
+    }, 'source_unavailable', 503) unless defined($out) && $rc == 0;
 
     my @pools;
     for my $line (split /\n/, $out) {
@@ -234,7 +254,7 @@ sub storage_pools {
             health => $f[9],
         };
     }
-    return { pools => \@pools, count => scalar(@pools) };
+    return ({ pools => \@pools, count => scalar(@pools) }, 'fresh', 200);
 }
 
 sub trim_one_line {
