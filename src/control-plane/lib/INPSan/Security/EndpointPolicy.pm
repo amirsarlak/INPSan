@@ -46,10 +46,24 @@ sub new { return bless {}, $_[0]; }
 sub lookup {
     my ($self, $method, $path) = @_;
     return undef unless defined($method) && defined($path);
+
     my $k = uc($method) . ' ' . $path;
-    my $p = $POLICY{$k};
-    return undef unless $p;
-    return { %$p };
+    if (my $p = $POLICY{$k}) {
+        return { %$p };
+    }
+
+    if (uc($method) eq 'GET' && $path =~ m{\A/api/v1/storage/pools/([A-Za-z0-9._-]{1,128})\z}) {
+        my $pool = $1;
+        return {
+            permission => 'storage.read',
+            scope_required => 1,
+            required_scope => 'pool:' . $pool,
+            resource_type => 'pool',
+            resource_id => $pool,
+        };
+    }
+
+    return undef;
 }
 
 sub registered_routes {
