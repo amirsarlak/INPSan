@@ -222,7 +222,7 @@ sub system_health {
     my $freshness = ($zpool_available && $alert_available) ? 'fresh'
                   : ($zpool_available || $alert_available) ? 'stale'
                   : 'source_unavailable';
-    my $http_status = ($zpool_available || $alert_available) ? 200 : 503;
+    my $http_status = 200;
 
     return ({
         pools_healthy => $pools_healthy,
@@ -238,7 +238,7 @@ sub storage_pools {
     return ({
         source_unavailable => JSON::PP::true,
         pools => []
-    }, 'source_unavailable', 503) unless defined($out) && $rc == 0;
+    }, 'source_unavailable', 200) unless defined($out) && $rc == 0;
 
     my @pools;
     for my $line (split /\n/, $out) {
