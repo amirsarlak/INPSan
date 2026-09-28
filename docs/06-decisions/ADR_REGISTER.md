@@ -14,5 +14,6 @@
 | ADR-0010 | Notification channels disabled by default | ACCEPTED | No channel activation before security and delivery acceptance tests |
 | ADR-0011 | Two-stage productization model | ACCEPTED | Stage 1 delivers secure single-node GA; Stage 2 delivers scale, automation and ecosystem |
 | ADR-0012 | License safety and napp-it independence | ACCEPTED FOR STAGE 1 | Resolve redistribution risk and make license expiry non-destructive |
+| ADR-0013 | Independent INPSan identity and authentication | ACCEPTED FOR 3.3 IMPLEMENTATION | Product-owned named identity/authentication boundary independent of napp-it; live evidence still required |
 
 Detailed high-impact decisions are documented in adjacent ADR files.
