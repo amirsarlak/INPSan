@@ -501,6 +501,42 @@ Expand the Stage 1 appliance into a centralized, multi-node and multi-site **Ent
 
 Stage 2 is complete when centralized control, automation, multi-site resilience and ecosystem integrations meet defined scalability, HA, security and supportability targets.
 
+
+## Final 3.3 Execution Gates — CP-3.3-FINAL-001
+
+This section is the authoritative execution order for the 3.3 product line.
+
+| Gate | Scope | Exit condition |
+|---|---|---|
+| S0 | Evaluation Foundation | TOE/PP/SPD/ST/SFR baseline approved |
+| S1 | Identity/AuthN | named identity, authentication, session basics and live evidence accepted |
+| S2 | RBAC/Object Scope | deny-by-default capability model and negative authorization tests accepted |
+| S3 | Security Audit Plane | complete attributable audit coverage and protected evidence path accepted |
+| S4 | Session/TLS/Secrets | production-safe session model, TLS-only management and secret/cert lifecycle accepted |
+| S5 | Secure Operation Broker | state-changing actions flow through validated, authorized, audited safe execution boundary |
+| S6 | Storage Protocol Security | FC/iSCSI/NFS/SMB security policies and unauthorized-access tests accepted |
+| S7 | Secure Update/Supply Chain | signed update, rollback, SBOM and security scanning gates accepted |
+| S8 | Security Verification | internal verification, independent pentest and remediation retest accepted |
+| P1 | UX/Workspace | human-owned design system, personas, customizable workspace and provenance evidence accepted |
+| P2 | Benchmarking | reproducible CPU/RAM/ARC/storage/API/UI/alert/startup benchmarks accepted |
+| P3 | Predictive Foundation | data quality, feature schema, baseline/anomaly prototype and explainability contract accepted |
+| P4 | Central Manager Architecture | node identity/enrollment/channel/audit/outage-safety contracts accepted |
+| P5 | GA Governance | licensing, update policy, support, recovery, compatibility and release evidence complete |
+
+### Execution rule
+
+Security gates S1-S5 precede any production state-changing Web/API endpoint.
+
+Product workstreams P1-P5 run in parallel but may not bypass security, evidence or product-boundary requirements.
+
+### Release labels
+
+- `DESIGN`: documented only.
+- `PROTOTYPE`: code exists but not fully validated.
+- `PARTIAL`: implemented subset or missing required evidence.
+- `PASS`: implementation + deterministic test + retained evidence.
+- `GA-CANDIDATE`: all mandatory Stage 1 gates satisfied.
+
 ---
 
 # Final destination
