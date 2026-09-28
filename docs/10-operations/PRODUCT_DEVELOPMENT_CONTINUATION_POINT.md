@@ -27,12 +27,12 @@ The existing operations/RCA continuation point remains valid and separate. Produ
 
 ## Immediate next execution
 
-1. Validate Benchmark Collector v0.1.0-dev on the frozen 3.2.x OmniOS node using non-destructive observation only.
-2. Build the source/module ownership census.
-3. Record the 3.2.x reference performance/resource baseline.
-4. Complete the IODS persona/workflow/component-token contract.
-5. Complete AuthN/RBAC/Audit contracts before implementing state-changing Control Plane endpoints.
-6. Design the first read-only Control Plane API contract.
+1. Live-validate `inpsan-control-plane-v0.1.0-dev.pl` on the frozen 3.2.x OmniOS node, loopback only.
+2. Verify `/api/v1/product/version`, `/api/v1/system/health` and `/api/v1/storage/pools` response contracts.
+3. Add read-only adapters for disks/topology/performance/alerts/events after the first three endpoints PASS.
+4. Begin Issue #10 AuthN/RBAC/Audit implementation only after read-only live validation.
+5. Build the first IODS prototype on the versioned API contract after API data semantics stabilize.
+6. Keep Predictive Intelligence and Central Manager as planned R&D until their prerequisite data/security gates are satisfied.
 
 ## Prohibited shortcuts
 
@@ -44,4 +44,4 @@ The existing operations/RCA continuation point remains valid and separate. Produ
 
 ## Next acceptance target
 
-`WP-3.3-001 PASS — Engineering Foundation Ready for Control Plane Implementation`
+`Control Plane v0.1 Read-Only Live Validation PASS`
