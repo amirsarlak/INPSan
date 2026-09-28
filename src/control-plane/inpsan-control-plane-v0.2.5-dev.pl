@@ -16,19 +16,19 @@ use INPSan::Security::Scope;
 use INPSan::Security::Certificate;
 
 # INPSan Control Plane v0.2.5-dev
-# Security milestone: SEC-IMP-01 independent identity/authentication foundation.
+# Security milestone: SEC-IMP-04 TLS / session / certificate foundation.
 #
 # Development constraints:
 # - loopback only;
-# - HTTP only because TLS work is SEC-IMP-05 and is NOT complete;
-# - therefore this build MUST NOT be exposed to a management network;
+# - TLS is mandatory in this build;
+# - current evaluation binding remains loopback-only until production exposure is separately accepted;
 # - no storage state-changing endpoint exists in this build.
 #
 # Related evidence:
 # docs/11-security/CONTROL_PLANE_SECURITY_CONTRACT_V1.md
 # docs/11-security/SFR_TRACEABILITY_BASELINE_V0.1.md
 
-my $port = 18080;
+my $port = 18443;
 my $help = 0;
 my $user_store = $ENV{INPSAN_CP_USER_STORE} || '/var/opt/inpsan/security/users.json';
 my $audit_log = $ENV{INPSAN_CP_AUTH_AUDIT} || '/var/tmp/inpsan-control-plane-auth-audit.jsonl';
