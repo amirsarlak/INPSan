@@ -1,7 +1,7 @@
 # INPSan Continuation Point
 
 Checkpoint time: `2026-09-28`  
-Primary reference: `CP-SEC-004`  
+Primary reference: `CP-SEC-005`  
 Parents: `CP-KB-001 / CP-SEC-001 / CP-PD-001`
 
 ## Current execution state
@@ -23,8 +23,8 @@ Final integrated 3.3 roadmap is approved and operations have started.
 - S0 Evaluation Foundation: PASS (design baseline)
 - S1 Independent Identity/AuthN: PASS — live OmniOS validation accepted
 - S2 RBAC/Object-Scope Authorization: PASS — live role and cross-pool scope evidence accepted for single-node baseline
-- S3 Security Audit Plane: PARTIAL — schema, runtime audit, hash-chain and tamper detection PASS; retention/rotation/capacity/export/benchmark remain open
-- S4 Session/TLS/Secrets: OPEN
+- S3 Security Audit Plane: PASS — live rotation/retention/query/integrity/benchmark evidence accepted
+- S4 Session/TLS/Secrets: STARTED
 - S5 Secure Operation Broker: OPEN
 - S6 Storage Protocol Security: OPEN
 - S7 Secure Update/Supply Chain: OPEN
