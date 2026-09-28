@@ -57,4 +57,8 @@ PASS only when current proprietary modules are inventoried, 3.3 modules have con
 - Knowledge-Based Architecture v1: CREATED.
 - Readiness Matrix: CREATED.
 - Work package: STARTED.
-- Coding/security/benchmark/UX implementation tasks: OPEN.
+- Security Architecture v1: CREATED on development branch.
+- IODS v1 foundation: CREATED on development branch.
+- Benchmark Collector v0.1.0-dev: CREATED on development branch; live validation pending.
+- GitHub implementation backlog: issues #4–#9 OPEN.
+- Next gate: validate benchmark collector and complete source/module census.
