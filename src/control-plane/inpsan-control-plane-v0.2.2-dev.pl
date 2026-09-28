@@ -157,6 +157,7 @@ sub dispatch {
             user_id => $session->{user_id},
             username => $session->{username},
             roles => $session->{roles},
+            scopes => $session->{scopes},
         }, 'fresh', 'auth-v0.2'));
     }
 
