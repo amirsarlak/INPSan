@@ -1,7 +1,7 @@
 # INPSan Continuation Point
 
 Checkpoint time: `2026-09-28`  
-Primary reference: `CP-3.3-FINAL-001`  
+Primary reference: `CP-SEC-002`  
 Parents: `CP-KB-001 / CP-SEC-001 / CP-PD-001`
 
 ## Current execution state
@@ -22,8 +22,8 @@ Final integrated 3.3 roadmap is approved and operations have started.
 ### Security implementation status
 - S0 Evaluation Foundation: PASS (design baseline)
 - S1 Independent Identity/AuthN: PARTIAL — code exists; live OmniOS evidence still required
-- S2 RBAC/Object-Scope Authorization: STARTED
-- S3 Security Audit Plane: OPEN
+- S2 RBAC/Object-Scope Authorization: PARTIAL — capability engine, endpoint policy and scope engine implemented; live negative tests still required
+- S3 Security Audit Plane: STARTED — canonical schema/module and AuthN/AuthZ event wiring implemented; integrity/retention/export remain open
 - S4 Session/TLS/Secrets: OPEN
 - S5 Secure Operation Broker: OPEN
 - S6 Storage Protocol Security: OPEN
@@ -46,14 +46,12 @@ Current development components:
 ## Immediate next operations
 
 1. Execute SEC-IMP-01 live OmniOS validation and retain sanitized evidence.
-2. Add explicit endpoint-permission registry rather than scattered authorization literals.
-3. Add negative authorization tests for viewer/operator/storage-admin/security-admin/auditor/platform-admin.
-4. Add object/scope authorization contract for storage resources.
-5. Start SEC-IMP-03 Security Audit Plane:
-   - canonical audit schema;
-   - login/logout/authz/config/privileged-action coverage;
-   - integrity/retention/export design.
-6. Do not add production state-changing storage endpoints before S1-S5 gates pass.
+2. Execute negative authorization tests for viewer/operator/storage-admin/security-admin/auditor/platform-admin.
+3. Add first object-specific read endpoint using explicit resource scope.
+4. Extend Security Audit Plane with integrity/retention/capacity/export design.
+5. Prepare live OmniOS evidence for AuthN/RBAC/Scope/Audit.
+6. Continue Session/TLS/Secrets design only after current static/live security wiring is stable.
+7. Do not add production state-changing storage endpoints before S1-S5 gates pass.
 
 ## Parallel mandatory workstreams
 
