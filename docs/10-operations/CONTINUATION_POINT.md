@@ -95,3 +95,22 @@ Execution command from `src/control-plane`:
 
 Expected evidence directory:
 `/var/tmp/inpsan-sec-live-YYYYMMDD-HHMMSS/`
+
+
+## S3 package v0.2.4-dev
+
+Package prepared for OmniOS validation:
+`INPSan-3.3-SEC-S3-AUDIT-v0.2.4.zip`
+
+GitHub source baseline includes:
+- `src/control-plane/lib/INPSan/Security/Audit.pm` v0.3.0-dev
+- `src/control-plane/lib/INPSan/Security/EndpointPolicy.pm`
+- `src/control-plane/inpsan-control-plane-v0.2.4-dev.pl`
+- `src/control-plane/verify-audit-s3-v0.2.4.sh`
+- `src/control-plane/benchmark-audit-v0.2.4.sh`
+- `src/control-plane/live-validate-audit-s3-v0.2.4.sh`
+
+Local package QA: PASS.
+OmniOS runtime evidence: PENDING.
+
+Do not promote S3 to PASS until the v0.2.4 live validator and benchmark pass on the INPSan OmniOS node.
