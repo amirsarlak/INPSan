@@ -64,4 +64,9 @@ PASS only when current proprietary modules are inventoried, 3.3 modules have con
 - Benchmark Collector live validation: PASS.
 - 3.2.x resource baseline: RECORDED.
 - Source/Module Census: PASS — 43 normalized current code files / 7,419 LOC; evidence indexed.
-- Next gate: complete IODS implementation contract and Security Architecture implementation gate.
+- IODS Implementation Contract v1: PASS — Issue #6 completed.
+- Control Plane Security Contract v1: PASS — Issue #7 completed.
+- Control Plane API Contract v0.1: CREATED.
+- Read-only Control Plane prototype v0.1.0-dev: IMPLEMENTED on development branch; live OmniOS validation pending.
+- AuthN/RBAC/Audit coding task: Issue #10 OPEN, gated behind read-only live validation.
+- Next gate: live-validate Control Plane v0.1.0-dev, then implement remaining read-only adapters.
