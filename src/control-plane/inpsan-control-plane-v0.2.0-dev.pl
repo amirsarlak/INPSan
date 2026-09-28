@@ -9,6 +9,7 @@ use Getopt::Long qw(GetOptions);
 use POSIX qw(strftime);
 use Fcntl qw(:DEFAULT :flock);
 use INPSan::Security::Auth;
+use INPSan::Security::RBAC;
 
 # INPSan Control Plane v0.2.0-dev
 # Security milestone: SEC-IMP-01 independent identity/authentication foundation.
@@ -48,6 +49,7 @@ my $auth = INPSan::Security::Auth->new(
     idle_timeout => 900,
     absolute_timeout => 28800,
 );
+my $rbac = INPSan::Security::RBAC->new();
 
 my %fail_state;
 
@@ -152,15 +154,21 @@ sub dispatch {
         unless $req->{method} eq 'GET';
 
     if ($req->{path} eq '/api/v1/product/version') {
+        my $az = authorize_request($session, 'system.read');
+        return @$az unless $az->[0] == 0;
         return (200, ok_obj(product_version(), 'fresh', 'control-plane-dev'));
     }
 
     if ($req->{path} eq '/api/v1/system/health') {
+        my $az = authorize_request($session, 'health.read');
+        return @$az unless $az->[0] == 0;
         my ($data, $freshness, $http_status) = system_health();
         return ($http_status, ok_obj($data, $freshness, 'local-read-model'));
     }
 
     if ($req->{path} eq '/api/v1/storage/pools') {
+        my $az = authorize_request($session, 'storage.read');
+        return @$az unless $az->[0] == 0;
         my ($data, $freshness, $http_status) = storage_pools();
         return ($http_status, ok_obj($data, $freshness, 'zpool-list'));
     }
@@ -169,6 +177,27 @@ sub dispatch {
         if $req->{path} =~ m{^/api/v1/(?:storage/disks|hardware/topology|performance/live|alerts|events)$};
 
     return (404, error_obj('not_found', 'Unknown endpoint.'));
+}
+
+sub authorize_request {
+    my ($session, $required_capability) = @_;
+    my $decision = $rbac->authorize(
+        roles => $session->{roles},
+        required_capability => $required_capability,
+    );
+
+    if (!$decision->{allowed}) {
+        audit_event(
+            $session->{username},
+            'authorization',
+            $required_capability,
+            'deny',
+            $decision->{reason}
+        );
+        return [403, error_obj('forbidden', 'Insufficient permission.')];
+    }
+
+    return [0];
 }
 
 sub login_route {
@@ -307,7 +336,7 @@ sub error_obj {
 sub respond {
     my ($client, $status, $obj, $extra) = @_;
     my %reason = (
-        200 => 'OK', 400 => 'Bad Request', 401 => 'Unauthorized',
+        200 => 'OK', 400 => 'Bad Request', 401 => 'Unauthorized', 403 => 'Forbidden',
         404 => 'Not Found', 405 => 'Method Not Allowed',
         415 => 'Unsupported Media Type', 429 => 'Too Many Requests',
         500 => 'Internal Server Error', 501 => 'Not Implemented',
@@ -381,7 +410,7 @@ sub product_version {
             build => defined($bpath) ? read_trimmed($bpath) : undef,
         };
     }
-    return { control_plane => '0.2.0-dev', security_milestone => 'SEC-IMP-01', components => \@out };
+    return { control_plane => '0.2.1-dev', security_milestone => 'SEC-IMP-02', components => \@out };
 }
 
 sub system_health {
