@@ -223,8 +223,10 @@ sub issue_session {
     $token =~ s/=+\z//;
 
     my $key = sha256_hex($token);
+    my $session_id = 'ses-' . substr(sha256_hex(random_bytes(32)), 0, 24);
     my $now = time();
     $self->{sessions}{$key} = {
+        session_id => $session_id,
         user_id => $user->{user_id},
         username => $user->{username},
         roles => $user->{roles},
