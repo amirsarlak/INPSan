@@ -70,11 +70,34 @@ TMP="/var/tmp/inpsan-audit-static-$$.jsonl"
 ' <"$TMP" || exit 1
 rm -f "$TMP"
 
+echo '== Audit hash-chain integrity =='
+CHAIN="/var/tmp/inpsan-audit-chain-$.jsonl"
+/usr/bin/perl -I"$LIB" -MINPSan::Security::Audit -e '
+  my $p=$ARGV[0];
+  my $a=INPSan::Security::Audit->new(path=>$p,product_version=>"test");
+  $a->write_event(actor_id=>"alice",actor_type=>"user",action=>"login",target_type=>"session",outcome=>"success");
+  $a->write_event(actor_id=>"alice",actor_type=>"user",action=>"authorization",target_type=>"pool",target_id=>"Pool-1800GB",permission=>"storage.read",outcome=>"success");
+  my $v=$a->verify_chain();
+  die "chain verify failed\n" unless $v->{ok} && $v->{records} == 2;
+  print "audit_chain=PASS\n";
+' "$CHAIN" || exit 1
+
+/usr/bin/perl -0777 -pi -e 's/"outcome":"success"/"outcome":"tampered"/ if $. == 1' "$CHAIN"
+/usr/bin/perl -I"$LIB" -MINPSan::Security::Audit -e '
+  my $a=INPSan::Security::Audit->new(path=>$ARGV[0],product_version=>"test");
+  my $v=$a->verify_chain();
+  die "tamper was not detected\n" if $v->{ok};
+  print "audit_tamper_detection=PASS reason=$v->{reason}\n";
+' "$CHAIN" || exit 1
+rm -f "$CHAIN" "$CHAIN.state"
+
 echo '== Wiring =='
 grep -q "use INPSan::Security::EndpointPolicy" "$CP" || exit 1
 grep -q "use INPSan::Security::Audit" "$CP" || exit 1
+grep -q "use INPSan::Security::Scope" "$CP" || exit 1
 grep -q "authorize_endpoint" "$CP" || exit 1
 grep -q "endpoint_policy_missing" "$CP" || exit 1
+grep -q "storage_pool_detail" "$CP" || exit 1
 
 echo 'INPSan Control Plane v0.2.2-dev static security verification: PASS'
 echo 'Live OmniOS AuthN/RBAC/Audit validation is still required before S1/S2/S3 PASS.'
