@@ -30,7 +30,7 @@ sub new { return bless {}, $_[0]; }
 sub valid_scope {
     my ($self, $scope) = @_;
     return 0 unless defined($scope);
-    return $scope =~ m{A(?:node|pool|dataset|lun|share|site):[A-Za-z0-9._/-]{1,160}z} ? 1 : 0;
+    return $scope =~ m{\A(?:node|pool|dataset|lun|share|site):[A-Za-z0-9._/-]{1,160}\z} ? 1 : 0;
 }
 
 sub allows {
