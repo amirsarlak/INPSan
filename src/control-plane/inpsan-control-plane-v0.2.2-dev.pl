@@ -504,6 +504,36 @@ sub storage_pools {
     return ({ pools => \@pools, count => scalar(@pools) }, 'fresh', 200);
 }
 
+sub storage_pool_detail {
+    my ($pool) = @_;
+    return ({ error => 'invalid_pool_name' }, 'invalid', 400)
+        unless defined($pool) && $pool =~ /\A[A-Za-z0-9._-]{1,128}\z/;
+
+    my ($out, $rc) = run_capture('/usr/sbin/zpool', 'list', '-Hp', $pool);
+    return ({ pool => undef, found => JSON::PP::false }, 'fresh', 404)
+        unless defined($out) && $rc == 0;
+
+    my ($line) = grep { length($_) } split /\n/, $out;
+    return ({ pool => undef, found => JSON::PP::false }, 'fresh', 404)
+        unless defined($line);
+
+    my @f = split /\t|\s+/, $line;
+    return ({ source_unavailable => JSON::PP::true }, 'source_unavailable', 503)
+        unless @f >= 10;
+
+    return ({
+        found => JSON::PP::true,
+        pool => {
+            name => $f[0],
+            size_bytes => 0 + $f[1],
+            allocated_bytes => 0 + $f[2],
+            free_bytes => 0 + $f[3],
+            capacity_percent => ($f[7] =~ /^\d+$/ ? 0 + $f[7] : undef),
+            health => $f[9],
+        },
+    }, 'fresh', 200);
+}
+
 sub trim_one_line {
     my ($s) = @_;
     $s =~ s/\r?\n+/ /g;
