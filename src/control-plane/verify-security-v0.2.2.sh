@@ -9,12 +9,14 @@ AUTH="$LIB/INPSan/Security/Auth.pm"
 RBAC="$LIB/INPSan/Security/RBAC.pm"
 POLICY="$LIB/INPSan/Security/EndpointPolicy.pm"
 AUDIT="$LIB/INPSan/Security/Audit.pm"
+SCOPE="$LIB/INPSan/Security/Scope.pm"
 
 echo '== syntax =='
 /usr/bin/perl -I"$LIB" -c "$AUTH" || exit 1
 /usr/bin/perl -I"$LIB" -c "$RBAC" || exit 1
 /usr/bin/perl -I"$LIB" -c "$POLICY" || exit 1
 /usr/bin/perl -I"$LIB" -c "$AUDIT" || exit 1
+/usr/bin/perl -I"$LIB" -c "$SCOPE" || exit 1
 /usr/bin/perl -I"$LIB" -c "$CP" || exit 1
 
 echo '== RBAC semantics =='
@@ -35,6 +37,19 @@ echo '== Endpoint policy semantics =='
   die unless $a && $a->{permission} eq "storage.read";
   die if $p->lookup("DELETE","/api/v1/storage/pools");
   print "endpoint_policy=PASS\n";
+' || exit 1
+
+
+echo '== Scope semantics =='
+/usr/bin/perl -I"$LIB" -MINPSan::Security::Scope -e '
+  my $s=INPSan::Security::Scope->new();
+  die unless $s->valid_scope("node:local");
+  die if $s->valid_scope("../etc/passwd");
+  my $a=$s->allows(grants=>["pool:Pool-1800GB"], required_scope=>"pool:Pool-1800GB");
+  die unless $a->{allowed};
+  my $d=$s->allows(grants=>["pool:Pool-300G"], required_scope=>"pool:Pool-1800GB");
+  die if $d->{allowed};
+  print "scope=PASS\n";
 ' || exit 1
 
 echo '== Canonical audit schema safety =='
