@@ -109,7 +109,13 @@ my $server = IO::Socket::SSL->new(
 print "INPSan Control Plane v0.2.5-dev TLS listening on 127.0.0.1:$port\n";
 print "AUTHENTICATED TLS DEVELOPMENT/EVALUATION PROTOTYPE — loopback only\n";
 
-while (my $client = $server->accept()) {
+while (1) {
+    my $client = $server->accept();
+    if (!$client) {
+        warn "TLS accept rejected connection: " . IO::Socket::SSL::errstr() . "\n";
+        next;
+    }
+
     $client->autoflush(1);
 
     my ($request, $err) = read_request($client);
