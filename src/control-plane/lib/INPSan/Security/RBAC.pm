@@ -78,12 +78,12 @@ sub role_capabilities {
 sub effective_capabilities {
     my ($self, $roles) = @_;
     my %caps;
-    return %caps unless ref($roles) eq 'ARRAY';
+    return \%caps unless ref($roles) eq 'ARRAY';
     for my $role (@$roles) {
         next unless defined($role) && exists $ROLE_CAPS{$role};
         $caps{$_} = 1 for keys %{$ROLE_CAPS{$role}};
     }
-    return %caps;
+    return \%caps;
 }
 
 sub has_capability {
