@@ -88,6 +88,7 @@ my $audit = INPSan::Security::Audit->new(
 );
 
 my %fail_state;
+$SIG{PIPE} = 'IGNORE';
 
 my $audit_reconcile = $audit->reconcile_state();
 die "audit reconciliation failed\n" unless $audit_reconcile->{ok};
@@ -101,7 +102,7 @@ my $server = IO::Socket::SSL->new(
     SSL_server => 1,
     SSL_cert_file => $tls_cert,
     SSL_key_file => $tls_key,
-    SSL_version => 'TLSv12:TLSv13',
+    SSL_version => 'SSLv23:!TLSv1:!TLSv1_1:!SSLv3:!SSLv2',
     SSL_verify_mode => 0,
 ) or die "cannot bind TLS 127.0.0.1:$port: " . IO::Socket::SSL::errstr() . "\n";
 
