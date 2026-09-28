@@ -170,10 +170,12 @@ sub create_user {
     my $username = $args{username};
     my $password = $args{password};
     my $roles = $args{roles} || ['viewer'];
+    my $scopes = $args{scopes} || ['node:local'];
 
     die "invalid username" unless validate_username($username);
     die "password required" unless defined($password) && length($password) >= 12;
     die "roles must be array" unless ref($roles) eq 'ARRAY' && @$roles;
+    die "scopes must be array" unless ref($scopes) eq 'ARRAY' && @$scopes;
 
     my $store = $self->load_store();
     for my $u (@{$store->{users}}) {
@@ -185,6 +187,7 @@ sub create_user {
         username => $username,
         password_verifier => $self->hash_password($password),
         roles => $roles,
+        scopes => $scopes,
         enabled => JSON::PP::true,
         created_at_epoch => 0 + int(time()),
     };
@@ -225,6 +228,7 @@ sub issue_session {
         user_id => $user->{user_id},
         username => $user->{username},
         roles => $user->{roles},
+        scopes => $user->{scopes} || ['node:local'],
         created_at => $now,
         last_seen => $now,
         absolute_expires_at => $now + $self->{absolute_timeout},
