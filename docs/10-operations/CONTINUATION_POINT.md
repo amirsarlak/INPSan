@@ -1,7 +1,7 @@
 # INPSan Continuation Point
 
 Checkpoint time: `2026-09-28`  
-Primary reference: `CP-SEC-002`  
+Primary reference: `CP-SEC-003`  
 Parents: `CP-KB-001 / CP-SEC-001 / CP-PD-001`
 
 ## Current execution state
@@ -22,8 +22,8 @@ Final integrated 3.3 roadmap is approved and operations have started.
 ### Security implementation status
 - S0 Evaluation Foundation: PASS (design baseline)
 - S1 Independent Identity/AuthN: PARTIAL — code exists; live OmniOS evidence still required
-- S2 RBAC/Object-Scope Authorization: PARTIAL — capability engine, endpoint policy and scope engine implemented; live negative tests still required
-- S3 Security Audit Plane: STARTED — canonical schema/module and AuthN/AuthZ event wiring implemented; integrity/retention/export remain open
+- S2 RBAC/Object-Scope Authorization: PARTIAL — capability engine, endpoint policy, exact scope checks, pool-detail object route and static negative role/scope tests implemented; live HTTP evidence still required
+- S3 Security Audit Plane: PARTIAL — canonical schema, AuthN/AuthZ event wiring, sequence/hash chain and tamper verification implemented; retention/capacity/export/live evidence remain open
 - S4 Session/TLS/Secrets: OPEN
 - S5 Secure Operation Broker: OPEN
 - S6 Storage Protocol Security: OPEN
@@ -46,11 +46,11 @@ Current development components:
 ## Immediate next operations
 
 1. Execute SEC-IMP-01 live OmniOS validation and retain sanitized evidence.
-2. Execute negative authorization tests for viewer/operator/storage-admin/security-admin/auditor/platform-admin.
-3. Add first object-specific read endpoint using explicit resource scope.
-4. Extend Security Audit Plane with integrity/retention/capacity/export design.
+2. Execute live HTTP negative authorization tests for all initial roles.
+3. Execute live allow/deny tests for pool-specific scopes.
+4. Implement audit retention/rotation/capacity health and protected audit query/export.
 5. Prepare live OmniOS evidence for AuthN/RBAC/Scope/Audit.
-6. Continue Session/TLS/Secrets design only after current static/live security wiring is stable.
+6. Continue Session/TLS/Secrets after the current security line is stable.
 7. Do not add production state-changing storage endpoints before S1-S5 gates pass.
 
 ## Parallel mandatory workstreams
