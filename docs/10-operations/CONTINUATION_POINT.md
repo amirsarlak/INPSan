@@ -1,49 +1,82 @@
 # INPSan Continuation Point
 
-Checkpoint time: `2026-09-09`  
-Reference checkpoint: `CP-20260909-P2-ARC-01`
+Checkpoint time: `2026-09-28`  
+Primary reference checkpoint: `CP-SEC-001`  
+Parent strategic checkpoint: `CP-KB-001`
 
-## Immediate objective
+## Immediate product-development objective
 
-Proceed from the accepted ARC stabilization gate to the independent Aug 05 H240/`smrt` kernel-panic RCA using non-disruptive, read-only evidence first.
+Continue **WP-3.3-003 — Security Architecture & Certification-Readiness Baseline** from the newly created TOE/PP/SPD/ST evaluation foundation.
 
-## Current accepted stabilization
+The next active engineering task is:
 
-- Persistent ARC ceiling: `zfs_arc_max = 17179869184` (16 GiB).
-- Runtime post-reboot verification: `c_max = 17179869184`.
-- P2.3G short-term warm-up stability: `PASS`.
-- ARC reached approximately `14.92 GiB` while approximately `11.9 GiB` memory remained free in the final sample.
-- No page-out activity was observed in the sampled intervals.
-- All pools remained healthy.
-- No new FMA panic case appeared.
-- No production `savecore` re-test is permitted at this stage.
+**Build the SFR-to-INPSan implementation/test/evidence traceability baseline, then implement the independent Control Plane identity/AuthN/RBAC/audit security foundation before any production state-changing endpoint is accepted.**
 
-## Next execution sequence
+## Active 3.3 security artifacts
 
-1. Continue the Aug 05 H240/`smrt` panic RCA with current controller, driver, firmware, device-path and FMA correlation evidence only.
-2. Do not intentionally reproduce disk removal/reset conditions on production while the `smrt` panic RCA is open.
-3. Preserve `/var/crash/vmdump.0`, `/var/crash/vmdump.1`, and `/var/crash/INPSan-smrt-RCA-20260805`.
-4. Keep FMA UUID `5dc99e1e-95ee-4871-9791-ec40e8744d10` open for the Aug 05 `smrt` panic RCA.
-5. Keep FMA UUID `5c61c9de-cca3-4b1e-abbf-6b0334af7119` open until the pageout mitigation has adequate ordinary-operation history and any offline RCA is complete.
-6. Retain normal telemetry observation of ARC/memory without dedicated stress reproduction.
-7. Perform further crash-dump extraction/analysis only on a build-matched offline/clone environment where practical.
-8. Complete P1 alert-action cleanup: canonical asset query, audit `remote`, current engine-version metadata and frontend state-sync latency.
-9. Resume aggressive physical-bay removal/reinsert lifecycle testing only after the `smrt` driver-risk gate is reviewed.
-10. Keep all outbound notification channels disabled.
+- `docs/05-work-packages/WP-3.3-003-SECURITY-CERTIFICATION-BASELINE.md`
+- `docs/11-security/TOE_BOUNDARY_V0.1.md`
+- `docs/11-security/PP_APPLICABILITY_ANALYSIS_V0.1.md`
+- `docs/11-security/SECURITY_PROBLEM_DEFINITION_V0.1.md`
+- `docs/11-security/SECURITY_TARGET_SKELETON_V0.1.md`
+- `docs/11-security/SECURITY_ARCHITECTURE_V1.md`
+- `docs/11-security/CONTROL_PLANE_SECURITY_CONTRACT_V1.md`
+- `docs/11-security/SECURITY_HARDENING_BASELINE.md`
 
-## ARC stabilization acceptance
+## Immediate 3.3 execution sequence
 
-The 16 GiB stabilization baseline currently passes:
+1. Derive candidate CC SFRs from the Security Target skeleton.
+2. Map SFR -> INPSan component -> 3.3 security control -> test -> evidence.
+3. Freeze security-critical Control Plane interfaces.
+4. Implement named local identity/authentication foundation.
+5. Implement capability-based RBAC and object/scope authorization.
+6. Implement security audit schema and protected evidence path.
+7. Implement secure command/storage adapter; prohibit unsafe shell concatenation.
+8. Add TLS/session/input-validation baseline.
+9. Execute negative authorization and Web/API security tests.
+10. Only then permit state-changing Control Plane endpoints.
+11. Proceed to FC/iSCSI/NFS/SMB policy enforcement.
+12. Implement signed update/SBOM/SAST/SCA/DAST release-security gates.
+13. Prepare independent penetration test and evaluation evidence package.
 
-- exact runtime `c_max = 17179869184`;
-- controlled reboot activation;
-- short-term normal-operation ARC warm-up;
-- healthy ZFS pools;
-- no sampled page-out;
-- no new panic/FMA event.
+## Evaluation status
 
-The value remains a safe operational ceiling, not a final performance-tuned value. Any increase requires separate evidence and controlled testing.
+Working TOE:
+`INPSan Secure Storage Management Appliance — Single-Node 3.3 Evaluation Candidate`
 
-## Separate unresolved RCA
+Current PP position:
+- no unsupported Protection Profile conformance claim;
+- CC:2022/CEM:2022 Security Target approach is the working evaluation structure;
+- final AFTA PP/product category/assurance package remains subject to assigned-laboratory confirmation.
 
-The Aug 05 H240/`smrt` kernel panic remains an independent high-risk driver-path RCA and must not be considered resolved by the ARC mitigation.
+## Security acceptance rule
+
+No control is PASS without:
+1. implementation;
+2. deterministic verification;
+3. retained version-bound evidence.
+
+No production state-changing Control Plane endpoint is accepted before AuthN, RBAC, audit, TLS, input validation, secrets handling and negative authorization tests meet the Control Plane Security Contract.
+
+## Frozen operational baseline and unresolved production RCA
+
+The validated 3.2.x operational line remains frozen and must not be destabilized by 3.3 work.
+
+The previously accepted ARC stabilization remains in force:
+- persistent `zfs_arc_max = 17179869184` (16 GiB);
+- runtime verification previously PASS;
+- all pools healthy in the accepted sample;
+- no intentional production `savecore` re-test.
+
+The Aug 05 H240/`smrt` kernel panic remains a separate high-risk driver-path RCA:
+- do not intentionally reproduce disk removal/reset conditions on production while the RCA is open;
+- preserve the existing crash evidence;
+- aggressive physical-bay removal/reinsert testing remains gated by the driver-risk review.
+
+Outbound notification channels remain disabled until separately accepted.
+
+## Development branch
+
+`feature/inpsan-3.3-engineering-foundation`
+
+All 3.3 security/evaluation work continues on this branch or controlled child branches; accepted 3.2.x production baselines are not modified directly.
