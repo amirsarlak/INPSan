@@ -62,13 +62,13 @@ TMP="/var/tmp/inpsan-audit-static-$$.jsonl"
 /usr/bin/perl -MJSON::PP -0777 -e '
   my $s=<STDIN>; my ($line)=split /\n/,$s;
   my $j=decode_json($line);
-  die unless $j->{schema_version} eq "1.0";
+  die unless $j->{schema_version} eq "1.1";
   die unless $j->{actor_id} eq "tester";
   die unless $j->{permission} eq "storage.read";
   die unless $j->{outcome} eq "deny";
   print "audit_schema=PASS\n";
 ' <"$TMP" || exit 1
-rm -f "$TMP"
+rm -f "$TMP" "$TMP.state"
 
 echo '== Audit hash-chain integrity =='
 CHAIN="/var/tmp/inpsan-audit-chain-$.jsonl"
