@@ -114,3 +114,27 @@ Local package QA: PASS.
 OmniOS runtime evidence: PENDING.
 
 Do not promote S3 to PASS until the v0.2.4 live validator and benchmark pass on the INPSan OmniOS node.
+
+
+## S4 validation package
+
+Prepared package:
+`INPSan-3.3-SEC-S4-TLS-SESSION-v0.2.5.zip`
+
+SHA256:
+`214338fcd9723cac18ad9b79fe6b85d281363713b2b9f8335cfd27309d449e22`
+
+Package QA:
+- file manifest verification PASS;
+- bash syntax PASS;
+- Perl syntax PASS;
+- session idle/absolute timeout static tests PASS;
+- certificate bootstrap/chain health PASS;
+- local TLS live validation PASS;
+- plain-HTTP/TLS handshake resilience fix included;
+- secure-cookie/header tests PASS;
+- TLS/session benchmark script included.
+
+OmniOS runtime evidence: PENDING.
+
+Do not mark S4 PASS until `live-validate-s4-v0.2.5.sh` passes on the INPSan OmniOS node.
