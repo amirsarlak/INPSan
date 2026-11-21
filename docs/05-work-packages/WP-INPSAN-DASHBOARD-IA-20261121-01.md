@@ -95,3 +95,14 @@ Do not run fmadm repaired/acquit/flush, zpool clear/replace/export, devfsadm or 
 ## 7. Next implementation gate
 
 Produce a UI-only candidate against the extracted operational dashboard renderer and CSS, with checksum-pinned preflight and reversible change-set, followed by browser evidence on a test install. The 3.3.0-r3-r9 clean-host installation acceptance is independent and remains pending.
+
+## 8. Offline UI-only candidate (not live accepted)
+
+- **Artifact:** `INPSan-Dashboard-UI-P0-IA-Candidate-20261121.tar.gz`
+- **SHA-256:** `a8fa64d43656078ecbd681be4148d0f400d4ff627c3b4fe6094b80f2a66c3438`
+- **Payload:** checksum-pinned replacement for operational `dashboard.pl` and `dashboard.css` only.
+- **Static tests:** Perl syntax PASS, Bash syntax PASS, SHA-256 source verified, archive creation PASS.
+- **UI changes:** four P0 executive cards in first row, reduced secondary-card prominence, fixed-module ordering (Alerts, Storage, Runtime, Connectivity), responsive grids, neutral legacy header title, removal of unsupported hardcoded 30-day license claim.
+- **Safety:** no JS/DataAdapter/Telemetry/Alert Engine/ZFS/COMSTAR modification, no service restart, and no automatic notification activation; preflight fails if deployed files do not match recognized SHA-256 baselines. Per-file backup and rollback supplied.
+- **Acceptance:** PENDING clean-host r3-r9 install, OmniOS patch preflight, browser/visual checks and live data-contract verification.
+- **Distribution:** candidate archive is supplied to the user as a conversation artifact; project source payload is not committed to this documentation-only public repository.
