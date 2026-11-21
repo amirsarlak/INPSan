@@ -54,3 +54,24 @@
 - **Offline tests:** shell syntax, SVG XML, preflight/dry-run/install/verify/rollback PASS on a fixture built from consolidated r3-r9 Web-GUI assets, with byte-identical restoration of four source files.
 - **Unverified:** OmniOS production runtime, browser rendering and live authentication acceptance. This is not Single-Node GA evidence.
 - **Required operator actions:** verify archive SHA-256; run v2 preflight and dry-run before installation; hard-refresh Login after installation.
+
+## Candidate 03 — Login visual corrections from live screenshot (2026-11-21)
+
+**Operator evidence:** after installing Candidate v2 on the r3-r9 host, visible issues included unreadable dark company contact details, tiny Persian company type, redundant authorization/credential guidance below the submit button, and insufficiently refined P brand mark.
+
+**User-requested changes:**
+- Redraw the product P mark with controlled ribbon geometry, removing network-node dots.
+- Full bilingual logo in the header; Persian subtitle: «پلتفرم ذخیره‌سازی سازمانی».
+- Set Latin UI typography to Inter and Persian company name to Vazirmatn first, with system fallback because font binaries are not shipped.
+- Change the company website to a visible working link `https://www.partak.org`; increase contact contrast and preserve the existing telephone value.
+- Delete all four Login-only guidance/credential cards from the `admin.pl` heredoc (Authorized access, Secure management, Admin credential, Operator credential); preserve `$message_block` and complete login form.
+- Refresh CSS/SVG cache keys.
+
+**Package:** `INPSan-Login-Brand-UI-Candidate-v3-20261121-OmniOS.tar.gz`  
+**SHA-256:** `78c708ddd94d09c09125d5afc412f31f8dce269b35045a2c6efd83707e2d4ed9`
+
+**Deployment:** incremental over installed v2 (do not roll back v2 first). Scoped to `login.css`, `logo.svg`, `cgi-bin/admin.pl` in both `data` and `data_22.03`; the CGI file is modified **only inside Login HTML presentation**. Prior login credentials, auth variables, request processing, and login POST remain unchanged. Three commands preflight/dry-run/install are fail-closed on unknown HTML templates. Rollback v3 restores exactly v2 state.
+
+**Offline evidence:** XML/PERL/CSS syntax PASS; v2-on-r3-r9 fixture preflight, dry-run, install, verify, rollback PASS; byte-identical restoration of all six files. Chromium static screenshots checked at 1920x900, 1366x768, 768x1024, 390x844 and 320x740: no horizontal overflow, real website URL present, light link contrast, zero guidance-block elements in rendered DOM, vector logo loaded.
+
+**Remaining acceptance and disclosure:** live OmniOS CGI/auth success/failure and browser testing PENDING. The Persian header descriptor has outlined glyphs for portability; the exact signed Partak custom Persian master logo remains unavailable and is not claimed to be reproduced. The UI names Vazirmatn as primary for normal Persian text but does not distribute fonts; client fallback is possible. This cosmetic release does not enable TLS or change Telemetry, Alerts, Event Store, ZFS, COMSTAR or Storage Safety.
