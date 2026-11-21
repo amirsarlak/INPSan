@@ -1,323 +1,436 @@
 # INPSan Master Roadmap
 
-Roadmap status: `ACTIVE — KNOWLEDGE-BASED, SECURITY-CERTIFICATION & PRODUCT-IDENTITY REBASELINE`  
-Last review: `2026-09-28`
+Roadmap status: `ACTIVE — PRODUCTIZATION, UI COMPLETION, STORAGE OPERATIONS AND GA`
+Last rebaseline: `2026-11-21`
+Source of truth: `amirsarlak/INPSan`
 
-## Decision
+## 1. Product decision
 
-INPSan will be governed through **two macro stages**. The former six-phase roadmap is retained as internal workstreams, but it is no longer the top-level delivery model.
+INPSan is governed through two macro stages:
 
-This is not a restart. The existing storage, telemetry, dashboard, hardware-health and alerting work is carried forward as the validated technical foundation of Stage 1.
+1. **Stage 1 — Complete, secure and supportable Single-Node product**
+2. **Stage 2 — Enterprise scale, automation, replication and ecosystem**
 
+The existing storage, telemetry, dashboard, hardware-health and alerting work is retained as the technical foundation. The project is not restarted; the roadmap is reordered so that product identity, usability, independence and operational completeness are delivered before expansion.
 
-## 2026-09-28 Strategic Overlay — Knowledge-Based, Security-Certification and Product Identity
+## 2. Product destination
 
-This overlay is mandatory across both macro stages and does not invalidate already accepted technical baselines.
+INPSan must become an independently supportable enterprise storage platform for OmniOS, OpenZFS and COMSTAR/STMF with:
 
-### A. Bespoke enterprise UX and design provenance
+- product-specific GUI and design system;
+- reliable storage, hardware and service monitoring;
+- operational dashboards and management reports;
+- alert/event lifecycle and auditability;
+- snapshot, backup and restore management;
+- replication and disaster-recovery workflows;
+- secure upgrade and rollback;
+- licensing and intellectual-property governance;
+- hardware compatibility and HBA support;
+- later multi-node, automation and analytics capabilities.
 
-INPSan UI/UX must be visibly and demonstrably product-specific rather than a generic dashboard skin.
+## 3. Current validated foundation
 
-- establish an INPSan-owned Design System with documented components, spacing, typography, states, interaction rules and accessibility criteria;
-- define operator personas and workflows for Storage Administrator, Infrastructure Engineer, NOC/SOC Operator, IT Manager and Auditor;
-- derive monitoring, alerting, logging and reporting views from real operational workflows and the team's long-term enterprise-storage and infrastructure experience;
-- retain design rationale, usability-test evidence, version history and component ownership so the company can demonstrate how and why the interface was designed;
-- avoid generic decorative UI patterns that reduce information density or obscure operational context;
-- AI-assisted engineering tools may be used internally, but product ownership must be demonstrated through company-owned requirements, architecture, source, tests, design system and decision records rather than claims about the tool used to draft code or UI.
+The following foundation is implemented or validated in the project record:
 
-### B. Experience-driven observability and operational intelligence
+- OmniOS `r151054`;
+- OpenZFS and COMSTAR/STMF foundation;
+- Web GUI baseline;
+- Monitoring Foundation and SMF services;
+- CPU, memory/ARC, network, storage I/O and historical telemetry;
+- SMART, HBA, PCI and hardware-health inventory;
+- HPE iLO/Redfish integration;
+- HPE H240/`smrt` recognition;
+- physical 24-bay topology visualization;
+- Alert Engine and Event Store;
+- alert presentation and lifecycle history;
+- accessibility/readability corrections;
+- FC and iSCSI foundations;
+- persistent disk identity and Serial-to-Bay reconciliation;
+- pool-candidate inventory for present, enumerated disks outside active pools.
 
-Monitoring and alerting must be designed around actual enterprise-storage failure modes and operational questions:
+Latest live checkpoint:
 
-- capacity, latency, IOPS, throughput, queueing and workload-pattern visibility;
-- pool/dataset/LUN, FC/iSCSI, HBA, SMART, FMA, network and hardware-health correlation;
-- physical-to-logical disk/chassis mapping;
-- event timeline, incident context, root-cause evidence and operator-oriented remediation context;
-- audit, compliance and executive/management reporting;
-- configurable severity, thresholds, maintenance windows, suppression and escalation policies.
+- INPSan `3.3.0-r3-r9`;
+- topology schema `1.1`;
+- mapping `verified_live`;
+- 24-SFF chassis with three 8-bay boxes;
+- four healthy disks visible;
+- `rpool` online and healthy;
+- approximately 960 GB and 1.8 TB disks available as unassigned pool candidates.
 
-The product must preserve evidence that each important alert/report answers a defined operational or security need.
+## 4. Locked execution priority
 
-### C. Security-certification readiness (AFTA/Common-Criteria-oriented engineering)
+The following order is now the active execution priority before lower-priority roadmap expansion.
 
-Security certification readiness is a product-design requirement, not a final paperwork activity.
+### P0.1 — Complete INPSan visual shell and brand identity
 
-- define and version the Target of Evaluation (TOE) boundary for each certifiable release;
-- maintain a Security Target package containing product scope, security functions, assumptions, threats, objectives, interfaces and deployment model;
-- map security functions to an ISO/IEC 15408 / Common Criteria-oriented control matrix and tailor it to the current instructions of the assigned evaluation laboratory;
-- implement auditable identification/authentication, RBAC, session security, trusted management channels, security audit, reliable time, cryptographic controls, secure configuration and protection of security-relevant state;
-- signed packages and updates, integrity verification, rollback controls, secrets management, certificate lifecycle and secure defaults;
-- vulnerability management, SAST/DAST/dependency scanning, SBOM, penetration testing and reproducible security evidence;
-- hardening guidance for OmniOS/SMF, management-plane isolation and storage-protocol security;
-- keep certification artifacts version-bound so changes to the evaluated release are traceable.
+Scope:
 
-Exact AFTA protection profiles, evaluation level and laboratory instructions must be confirmed for the selected product category before certification freeze.
+- complete login-page shell;
+- replace remaining generic or inherited visual surfaces;
+- establish INPSan design tokens;
+- unify header, footer, panels, cards, dialogs, tables, forms and notifications;
+- define typography, spacing, borders, icons, focus states and responsive behavior;
+- preserve accessibility and readable high-contrast states;
+- document component ownership and visual rules.
 
-### D. Passive-defense and cyber-resilience alignment
+Acceptance:
 
-INPSan shall explicitly support resilience-oriented operational requirements:
+- login and all major pages use a coherent INPSan-owned shell;
+- no page visibly falls back to an inconsistent legacy theme;
+- desktop and supported browser regression checks pass.
 
-- continuous asset, health, threat and vulnerability visibility;
-- monitoring, detection, warning and readiness reporting;
-- continuity-oriented health indicators and evidence for BCP/DRP/incident response;
-- rapid recovery, backup/restore verification and controlled degradation/fail-safe behavior;
-- dependency visibility, redundancy state and single-point-of-failure reporting;
-- insider-risk-relevant auditability and privileged-operation traceability;
-- operational readiness reports suitable for critical, sensitive and important infrastructure environments.
+### P0.2 — Complete and correct navigation menus
 
-### E. Per-user and per-organization customizable operations workspace
+Scope:
 
-- role-aware dashboards and saved views;
-- user-selectable widgets, layouts, time ranges, filters and drill-downs;
-- organization-specific alert thresholds and policy profiles;
-- custom report templates and scheduled reports;
-- NOC/SOC/Storage/Management/Audit view presets;
-- configuration inheritance with administrator-controlled policy locks;
-- exportable and auditable dashboard/report definitions.
+- normalize primary navigation;
+- complete Pools, Disks, Monitoring, Reports, Snapshots, Replication, Services, System, Security and Administration sections;
+- remove dead, duplicate and misleading menu items;
+- define role-aware visibility;
+- ensure breadcrumbs, back navigation, active states and deep links are consistent;
+- preserve safe confirmation for destructive actions.
 
-### F. Local Predictive Intelligence Engine
+Acceptance:
 
-Predictive capability must be local-first and must not require cloud telemetry disclosure.
+- every visible menu item resolves to a supported page or documented controlled placeholder;
+- no orphaned or contradictory navigation remains;
+- menu behavior is validated at supported browser zoom levels.
 
-Architecture target:
+### P0.3 — Complete and correct the dashboard
 
-- local time-series telemetry store and feature store;
-- feature extraction from storage I/O, latency, queue depth, capacity growth, SMART/media errors, temperature, HBA/FC counters, network errors, ARC/memory pressure, alert/event history and workload seasonality;
-- deterministic baselines plus anomaly detection and forecasting before introducing higher-risk supervised prediction;
-- model registry, model/version provenance, confidence score, explainable contributing signals and drift monitoring;
-- prediction-to-alert workflow with explicit distinction between observed fault, anomaly, forecast and recommendation;
-- privacy-by-design: analyze operational telemetry/metadata by default, not customer payload content;
-- false-positive/false-negative measurement and acceptance gates before a model is allowed to create operational warnings.
+Scope:
 
-The predictive subsystem should be independently serviceable and is expected to introduce a dedicated analytics runtime (likely Python/ONNX-compatible) without forcing the rest of the product to migrate from its validated implementation languages.
+- executive health summary;
+- storage and pool overview;
+- disk and physical topology view;
+- live I/O;
+- monitoring freshness and readiness;
+- alert and incident summary;
+- hardware/FMA/iLO/HBA status;
+- network and protocol status;
+- capacity and trend panels;
+- operational drill-downs;
+- user-selectable widgets and saved views;
+- clear separation between observed facts, warnings, predictions and recommendations.
 
-### G. Central Management and fleet control
+Acceptance:
 
-A centralized management plane is a strategic product capability for organizations operating multiple INPSan nodes.
+- dashboard values are traceable to an authoritative source;
+- stale, missing and unverified values are explicitly labelled;
+- no synthetic health value is presented as measured truth;
+- all major cards have usable drill-down paths.
 
-- secure node enrollment and identity;
-- mTLS or equivalent authenticated node-to-manager channels;
-- inventory, health, alert and capacity aggregation;
-- centralized configuration/policy orchestration with local safety guards;
-- RBAC, tenant/site scopes and complete audit trail;
-- fleet-wide reporting, maintenance windows and lifecycle visibility;
-- staged/signed update orchestration with rollback and failure containment;
-- resilience to Central Manager outage: storage service and safe local management must continue.
+### P0.4 — Complete page and menu color system
 
-### H. Maintainable source and low key-person dependency
+Scope:
 
-All proprietary code must follow an enforceable engineering-documentation standard:
+- common color tokens for healthy, warning, critical, offline, disabled, selected and informational states;
+- login, menus, forms, tables, tooltips, alerts, modal dialogs and dashboard surfaces;
+- light/dark or approved theme behavior;
+- contrast and focus validation;
+- browser-specific rendering checks.
 
-- module/file header: purpose, owner, inputs/outputs, security impact and related ADR;
-- public function/module contracts and meaningful docstrings;
-- rationale comments for non-obvious algorithms and workarounds;
-- architecture and dependency maps;
-- automated unit/integration/regression tests;
-- source versioning and code review;
-- generated API/CLI reference where practical;
-- onboarding/runbook documentation sufficient for a qualified engineer to maintain the module without relying on one individual.
+Acceptance:
 
-Comments must explain **why** and operational/security intent, not mechanically restate obvious code.
+- no dark-text-on-dark-background defect;
+- state colors are semantically consistent across the product;
+- color is not the sole carrier of critical meaning.
 
-### I. Performance engineering and resource-efficiency benchmarks
+### P0.5 — Licensing and intellectual-property governance
 
-Every production service must have a measured performance envelope.
+Scope:
 
-Measure at minimum:
+- define INPSan-owned versus third-party components;
+- establish product LICENSE;
+- generate THIRD_PARTY_NOTICES and SBOM;
+- document CDDL/OpenZFS and OmniOS obligations;
+- resolve napp-it redistribution/bundling rights;
+- document ownership of source, UI, design system, schemas and documentation;
+- define EULA, support policy, privacy/telemetry statement and security-update policy;
+- define evidence and approval responsibilities.
 
-- CPU and memory/ARC overhead;
-- storage I/O overhead introduced by telemetry/history;
-- event and alert processing latency;
-- dashboard/API response latency (including percentile metrics);
-- telemetry sample success/freshness;
-- history-retention storage growth;
-- startup/recovery time;
-- predictive-engine inference cost;
-- Central Manager scale characteristics.
+Acceptance:
 
-Benchmark profiles must cover idle, normal, high-I/O, degraded/failure and long-duration soak conditions. Destructive or intrusive workloads are restricted to test environments.
+- every shipped component has a recorded license and provenance;
+- no unapproved proprietary napp-it material is redistributed;
+- release approval includes legal/product/engineering sign-off.
 
-### J. Knowledge-based evaluation evidence
+### P0.6 — Reduce napp-it dependency
 
-For every proprietary module, maintain:
+Scope:
 
-- module boundary and upstream/third-party dependencies;
-- source ownership;
-- implementation status;
-- measurable complexity indicators;
-- test plan and results;
-- version/release lineage;
-- RCA/ADR history;
-- demo scenario;
-- screenshots/diagrams with sensitive information removed;
-- evidence mapping to the knowledge-based software questionnaire.
+- inventory every runtime dependency on napp-it;
+- separate INPSan-owned data, API, UI, services and configuration;
+- create native INPSan adapters for disk, pool, dataset, service, snapshot and hardware inventory;
+- replace direct legacy-page dependence where practical;
+- define contractual containment for unavoidable transitional dependencies;
+- provide migration and rollback boundaries.
 
-Only implemented and demonstrable capabilities may be presented as current product technology; roadmap items must remain clearly identified as future R&D.
+Acceptance:
 
+- INPSan can operate its core monitoring, inventory, alerting and reporting without undocumented napp-it behavior;
+- remaining dependencies are explicit, versioned and tested;
+- long-term target is technical independence or a formally approved commercial route.
 
----
+### P0.7 — Upgrade, update and rollback capability
 
-# Stage 1 — Secure Single-Node Productization and General Availability
+Scope:
 
-Status: `IN PROGRESS`
+- signed and checksum-verified packages;
+- preflight, dry-run, install, verify and rollback commands;
+- versioned manifest and migration steps;
+- configuration backup and restore;
+- preservation of Event Store, Audit, Controls and notification policy;
+- safe service restart and dependency ordering;
+- failed-update recovery;
+- offline update support;
+- release notes and operator runbook.
 
-Estimated maturity:
+Acceptance:
 
-- storage/monitoring technical foundation: approximately `90–95%`;
-- complete Stage 1 productization scope: approximately `55–65%` because security, independent control plane, licensing and GA operations remain incomplete.
+- update from the current accepted baseline succeeds;
+- rollback restores the previous working baseline;
+- data-plane services and existing pools remain safe;
+- update does not silently alter storage layout or activate notifications.
 
-## Objective
+### P0.8 — HBA compatibility, including newer cards such as SN1100
 
-Deliver a supportable, secure and licensable **single-node INPSan appliance/product** that can be installed, operated, upgraded, backed up and recovered without depending on undocumented manual procedures.
+Scope:
 
-## Workstream 1.1 — Close the current operational foundation
+- define supported HBA models, firmware, driver and mode matrix;
+- validate SN1100 and other target HBA families;
+- cover FC initiator/target behavior, port state, WWN discovery, zoning/LUN visibility and fail/recovery;
+- distinguish required and optional ports;
+- capture driver/kernel/firmware compatibility;
+- add HBA evidence to topology, alerting and readiness;
+- document unsupported configurations and safe fallback behavior.
 
-- validate Dashboard Corrective Stabilization v3.2.4.3;
-- complete deterministic disk-to-bay reconciliation;
-- execute remove/reinsert/new-disk and failed/recovered-state tests;
-- resolve NTP synchronization;
-- close visual/browser regression testing;
-- keep notification channels disabled until explicit acceptance.
+Acceptance:
 
-## Workstream 1.2 — Independent INPSan control plane
+- supported HBA appears correctly in inventory;
+- required FC path is correctly classified;
+- optional disconnected ports do not create false critical alerts;
+- no HBA test compromises existing pools or data services.
+
+## 5. Stage 1 operational workstreams
+
+### W1 — Monitoring and observability
+
+Status: foundation implemented; product completion pending.
+
+Deliver:
+
+- health, capacity, latency, IOPS, throughput and queue visibility;
+- pool, dataset, LUN, disk, HBA, FC/iSCSI, SMART, FMA, network and hardware correlation;
+- physical-to-logical identity mapping;
+- freshness, completeness and readiness contracts;
+- event timeline and incident context;
+- maintenance windows, thresholds, suppression and escalation policies;
+- historical retention and export;
+- support bundle with sensitive-data filtering.
+
+### W2 — Reporting
+
+Status: planned/incomplete as a product capability.
+
+Deliver:
+
+- operational report templates;
+- storage capacity and growth reports;
+- pool/dataset/LUN and disk-health reports;
+- alert, incident, audit and change reports;
+- hardware and compatibility reports;
+- executive/NOC/SOC/Storage/Audit views;
+- scheduled reports;
+- PDF/CSV/JSON export where appropriate;
+- role-based report access;
+- report definition versioning and audit.
+
+### W3 — Snapshot and backup management
+
+Status: underlying platform capability exists; independent product workflow incomplete.
+
+Deliver:
+
+- snapshot inventory and browsing;
+- policy-based schedules;
+- retention and pruning policy;
+- holds/locks and protected snapshots;
+- dataset/pool/LUN scope;
+- restore and clone workflow;
+- backup/export integration;
+- restore verification;
+- space-impact reporting;
+- permissions, approvals and audit;
+- non-destructive failure behavior.
+
+### W4 — Alerting and event operations
+
+Status: core Alert Engine/Event Store implemented; operational hardening continues.
+
+Deliver:
+
+- observed-fault versus warning versus prediction distinction;
+- incident deduplication and lifecycle;
+- acknowledgement, silence and maintenance policy;
+- current state plus preserved history;
+- audit of operator actions;
+- startup/readiness integration;
+- notification channels disabled until channel-specific acceptance.
+
+### W5 — Security and independent control plane
+
+Deliver:
 
 - versioned REST API;
-- product-specific, role-aware and per-user customizable operations workspace;
-- saved dashboard/report views, policy-bound customization and scheduled reports;
-- authentication and session security;
-- enterprise RBAC;
+- authentication and secure sessions;
+- RBAC and least privilege;
 - audit trail;
-- asynchronous jobs and scheduler;
-- report generation;
-- configuration and secrets management;
-- explicit removal or contractual containment of napp-it redistribution/bundling dependency.
-
-## Workstream 1.3 — Hardening, security assurance and certification readiness
-
-- define the certifiable TOE boundary and Security Target package;
-- maintain an ISO/IEC 15408 / Common-Criteria-oriented security requirements and evidence matrix, tailored to assigned AFTA laboratory instructions;
-- OmniOS/SMF host hardening;
-- management-plane isolation;
+- CSRF/XSS/command-injection protections;
 - TLS and certificate lifecycle;
-- web/API controls aligned to OWASP ASVS 5.0 Level 2;
-- secure software development aligned to the current final NIST SSDF baseline;
-- storage-protocol security, FC zoning/LUN masking and iSCSI authentication policy;
-- secure update, package signing, SBOM and dependency scanning;
-- backup/restore, incident-response and evidence-based security verification;
-- cyber-resilience, continuity, readiness, vulnerability-reduction and passive-defense-oriented operational reporting.
+- secrets management;
+- management/data-plane separation;
+- secure defaults and rate controls;
+- security target and evidence matrix.
 
-Hardening is a permanent cross-cutting workstream, not a final-stage activity.
+### W6 — Reliability, packaging and operations
 
-## Workstream 1.4 — Licensing and product governance
-
-- third-party license inventory and SBOM;
-- explicit separation of CDDL/open-source components and proprietary INPSan components;
-- napp-it bundling decision: commercial agreement or technical independence;
-- signed offline-capable INPSan entitlement format;
-- node/site licensing and rehost workflow;
-- non-destructive expiry and grace-period behavior;
-- EULA, support policy, release policy and security-update policy.
-
-## Workstream 1.5 — GA operations, maintainability and performance engineering
+Deliver:
 
 - reproducible build and installation package;
-- enforce source-code documentation, module contracts, rationale comments, code review and test evidence;
-- establish resource-efficiency benchmarks and service performance budgets;
-- upgrade and rollback paths;
+- upgrade/rollback;
 - configuration backup/restore;
-- support bundle with sensitive-data filtering;
 - hardware compatibility matrix;
-- operational runbooks;
-- release signing and checksums;
-- acceptance and soak testing.
+- runbooks and support procedures;
+- performance budgets;
+- idle, normal, high-I/O, degraded and long-duration testing;
+- signed release artifacts;
+- sensitive-data filtering.
 
-## Stage 1 exit gate
+## 6. Stage 1 exit gate — Single-Node GA
 
-Stage 1 is complete only when:
+Stage 1 cannot be declared GA until all conditions below pass:
 
-1. the single-node product has no unresolved critical operational defect;
-2. disk/bay identity and failure/recovery tests pass;
-3. authentication, RBAC, audit, TLS and secrets handling pass security acceptance;
-4. license and third-party redistribution risks are resolved;
-5. upgrade, rollback and configuration restore are demonstrated;
-6. the product can continue serving existing data safely if a commercial license expires;
-7. documentation, compatibility matrix and signed release artifacts are complete;
-8. an official **INPSan Single-Node GA** checkpoint is approved.
+1. login, menus, pages and dashboard meet the approved INPSan design baseline;
+2. no unresolved critical operational defect remains;
+3. disk/Bay identity passes add/remove/reinsert/failure/recovery tests;
+4. monitoring and reporting are traceable and complete;
+5. snapshot and restore workflows are tested;
+6. authentication, RBAC, audit, TLS and secrets handling pass;
+7. HBA compatibility matrix passes the supported hardware target;
+8. napp-it redistribution risk is resolved or contractually contained;
+9. licensing and intellectual-property records are complete;
+10. upgrade, rollback and configuration restore are demonstrated;
+11. SBOM, third-party notices and signed release artifacts exist;
+12. FMA/H240 driver-risk RCA is classified with a safe operating policy;
+13. notification posture is explicitly accepted;
+14. official `INPSan Single-Node GA` checkpoint is approved.
 
----
+## 7. Stage 2 — Enterprise scale and resilience
 
-# Stage 2 — Enterprise Scale, Automation and Ecosystem
+Stage 2 begins only after Stage 1 GA.
 
-Status: `PLANNED`
+### W7 — Replication and disaster recovery
 
-## Objective
+Status: planned.
 
-Expand the Stage 1 appliance into a centralized, multi-node and multi-site **Enterprise Storage Platform**.
+Deliver:
 
-## Workstream 2.1 — Centralized and multi-node management
+- policy-based ZFS replication;
+- snapshot-to-replication integration;
+- schedule, retention and bandwidth controls;
+- source/target identity and authorization;
+- RPO/RTO reporting;
+- replication health and lag monitoring;
+- failover/failback workflow;
+- DR test mode and evidence;
+- site/cluster licensing;
+- Central Manager outage independence.
+
+### W8 — Central Manager and multi-node
 
 - secure node enrollment;
-- authenticated/encrypted node-to-manager channels;
-- role/site scoped administration and audit;
-- central manager;
-- organization/site/cluster/storage hierarchy;
-- federated monitoring and incident view;
-- fleet configuration and lifecycle management;
-- HA-aware control-plane design.
+- mTLS or equivalent authenticated channels;
+- node/site/cluster/storage hierarchy;
+- federated inventory, alerts, capacity and reports;
+- central policy with local safety guards;
+- fleet audit and RBAC;
+- staged signed updates and rollback;
+- HA-aware control plane.
 
-## Workstream 2.2 — Automation and orchestration
+### W9 — Automation and orchestration
 
 - workflow engine;
 - policy engine;
 - scheduled and event-driven jobs;
-- maintenance mode and suppression;
 - approval-gated remediation;
+- maintenance mode;
 - ticketing and integration adapters.
 
-## Workstream 2.3 — Replication and resilience management
+### W10 — Local predictive intelligence
 
-- policy-based snapshot and replication management;
-- topology-aware failover/failback workflows;
-- RPO/RTO reporting;
-- DR testing and evidence;
-- cluster/site licensing.
+- local time-series and feature store;
+- deterministic baselines;
+- anomaly detection and forecasting;
+- capacity and saturation prediction;
+- explainable signals and confidence;
+- model registry and drift monitoring;
+- false-positive/false-negative acceptance;
+- predictive alerts clearly separated from observed faults.
 
-## Workstream 2.4 — Local Predictive Intelligence and analytics
+### W11 — Ecosystem integrations
 
-- local-first telemetry/feature store with no required cloud disclosure;
-- deterministic baselines and workload profiling;
-- anomaly detection;
-- capacity and saturation forecasting;
-- failure-risk estimation from multi-source operational telemetry;
-- explainable predictions with contributing signals and confidence;
-- model registry, versioning and drift monitoring;
-- false-positive/false-negative acceptance metrics;
-- root-cause assistance and recommendation engine;
-- predictive alerts remain distinguishable from observed faults;
-- digital-twin modeling only after data-quality and model-quality gates are satisfied.
-
-## Workstream 2.5 — Ecosystem and hybrid cloud
-
-- VMware, Hyper-V and Proxmox integrations;
-- Kubernetes/OpenShift integration;
-- backup ecosystem integration;
+- VMware, Hyper-V and Proxmox;
+- Kubernetes/OpenShift;
+- backup platforms;
 - cloud connectors;
-- plugin/SDK governance.
+- plugin and SDK governance.
 
-## Stage 2 exit gate
+## 8. Cross-cutting governance
 
-Stage 2 is complete when centralized control, automation, multi-site resilience and ecosystem integrations meet defined scalability, HA, security and supportability targets.
+Every release and major work package must include:
 
----
+- source commit and release lineage;
+- ADR/RCA linkage;
+- package hash and signature;
+- upgrade and rollback path;
+- test report and evidence ID;
+- security and licensing impact;
+- compatibility impact;
+- sanitized screenshots/diagrams;
+- operator documentation.
 
-# Final destination
+Production safety rules remain locked:
 
-**INPSan Enterprise Storage Platform** with:
+- no automatic pool destruction, clear, replace or export;
+- no automatic FMA acquit/repaired;
+- no silent notification activation;
+- no storage mutation as a UI repair;
+- no claim of PASS without evidence;
+- no raw production identifiers or secrets in the public repository.
 
-- unified management;
-- secure and scalable architecture;
-- automation-driven operations;
+## 9. Immediate execution sequence
+
+1. Freeze the current `3.3.0-r3-r9` live baseline.
+2. Produce the INPSan Design System and page inventory.
+3. Complete login shell, menus, common theme and color tokens.
+4. Complete dashboard information architecture and source-of-truth mapping.
+5. Add reporting, snapshot and replication sections to the GUI/API design.
+6. Establish licensing/IP and napp-it dependency registers.
+7. Implement signed update, rollback and configuration restore.
+8. Build HBA/SN1100 compatibility branch and test matrix.
+9. Re-run storage, topology, monitoring, alert, snapshot and restore acceptance.
+10. Issue the next checkpoint after evidence review.
+
+## 10. Final destination
+
+INPSan Enterprise Storage Platform:
+
+- product-owned user experience;
+- independent and supportable control plane;
+- secure single-node appliance;
+- complete monitoring, reporting, snapshots and replication;
+- hardware compatibility and lifecycle safety;
 - multi-node and multi-site control;
-- AI-assisted insights;
-- hybrid-cloud readiness;
-- enterprise-grade reliability and supportability.
+- automation, analytics and ecosystem integration.
