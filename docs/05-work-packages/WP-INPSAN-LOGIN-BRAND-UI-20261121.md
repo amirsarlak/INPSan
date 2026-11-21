@@ -43,3 +43,14 @@
 5. If needed, `./bin/inpsan-login-ui --rollback`.
 
 **Do not declare live UI acceptance before host evidence.**
+
+## Candidate 02 — Partak-aligned product logo (provisionally accepted)
+- **Purpose:** Incorporate the newly selected P/network/data INPSan mark in the Login installer while retaining approved INP palette and the Candidate 01 visual shell.
+- **Artifact:** `INPSan-Login-Brand-UI-Candidate-v2-20261121-OmniOS.tar.gz`
+- **SHA-256:** `d8758e51132f633533b3448b60f2005ec022fd76ebf13baa8121fb018b4af7e1`
+- **Scope:** Login `logo.svg` and Login-scoped `login.css` under both `data` and `data_22.03`. No `admin.pl` updates, no auth/Storage/Telemetry modifications.
+- **Provenance:** SVG paths traced from the visually provisionally accepted 2026-11-21 brand concept image. This is **not** the designer's native Bézier source; fine contour adjustments remain open for final brand approval.
+- **Installer:** v2 uses a dedicated rollback state; refuses installation over existing Candidate 01 overlay unless the old package has been rolled back.
+- **Offline tests:** shell syntax, SVG XML, preflight/dry-run/install/verify/rollback PASS on a fixture built from consolidated r3-r9 Web-GUI assets, with byte-identical restoration of four source files.
+- **Unverified:** OmniOS production runtime, browser rendering and live authentication acceptance. This is not Single-Node GA evidence.
+- **Required operator actions:** verify archive SHA-256; run v2 preflight and dry-run before installation; hard-refresh Login after installation.
